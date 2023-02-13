@@ -406,77 +406,83 @@ export default function Onform() {
             },
             width: "5%"
         },
-        {
-            name: "Datum",
-            selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
-            width: "4%"
-        },
-        {
-            name: "FormId",
-            // selector: (row: any) => (row?.formId ? row?.formId : "-"),
-            cell: (row: any, index: any) => {
-                return (
+        // {
+        //     name: "Datum",
+        //     selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
+        //     width: "4%"
+        // },
+        // {
+        //     name: "FormId",
+        //     // selector: (row: any) => (row?.formId ? row?.formId : "-"),
+        //     cell: (row: any, index: any) => {
+        //         return (
 
-                    <>
-                        <div className="showmore-class text-justify p-2">
-                            {!row.formId ? "-" : row?.formId}
-                        </div>
-                    </>
-                );
-            },
-            width: "6%"
-        },
-        {
-            name: "Formularname",
-            // selector: (row: any) => (row?.formName ? row?.formName : "-"),
-            cell: (row: any, index: any) => {
-                return (
+        //             <>
+        //                 <div className="showmore-class text-justify p-2">
+        //                     {!row.formId ? "-" : row?.formId}
+        //                 </div>
+        //             </>
+        //         );
+        //     },
+        //     width: "6%"
+        // },
+        // {
+        //     name: "Formularname",
+        //     // selector: (row: any) => (row?.formName ? row?.formName : "-"),
+        //     cell: (row: any, index: any) => {
+        //         return (
 
-                    <>
-                        <div className="showmore-class text-justify p-2">
-                            {!row.formName ? "-" : row?.formName}
-                        </div>
-                    </>
-                );
-            },
-            width: "8%"
-        },
-        {
-            name: "AdId",
-            selector: (row: any) => (row?.adId ? row?.adId : "-"),
+        //             <>
+        //                 <div className="showmore-class text-justify p-2">
+        //                     {!row.formName ? "-" : row?.formName}
+        //                 </div>
+        //             </>
+        //         );
+        //     },
+        //     width: "8%"
+        // },
+
+        // AD - fields 
+        // {
+        //     name: "AdId",
+        //     selector: (row: any) => (row?.adId ? row?.adId : "-"),
             
-            sortable: true,
-        },
-        {
-            name: "Adname",
-            selector: (row: any) => (row?.adName ? row?.adName : "-"),
-            sortable: true,
-        },
-        {
-            name: "Adsetname",
-            selector: (row: any) => (row?.adsetName ? row?.adsetName : "-"),
-            sortable: true,
-        },
-        {
-            name: "AdsetId",
-            selector: (row: any) => (row?.adsetId ? row?.adsetId : "-"),
-            sortable: true,
-        },
-        {
-            name: "Kampagne Id",
-            selector: (row: any) => (row?.campaignId ? row?.campaignId : "-"),
-            sortable: true,
-        },
-        {
-            name: "Kampagne name",
-            selector: (row: any) => (row?.campaignName ? row?.campaignName : "-"),
-            sortable: true,
-        },
-        {
-            name: "istBio",
-            selector: (row: any) => (row?.isOrganic ? row?.isOrganic : "-"),
-            sortable: true,
-        },
+        //     sortable: true,
+        // },
+        // {
+        //     name: "Adname",
+        //     selector: (row: any) => (row?.adName ? row?.adName : "-"),
+        //     sortable: true,
+        // },
+        // {
+        //     name: "Adsetname",
+        //     selector: (row: any) => (row?.adsetName ? row?.adsetName : "-"),
+        //     sortable: true,
+        // },
+        // {
+        //     name: "AdsetId",
+        //     selector: (row: any) => (row?.adsetId ? row?.adsetId : "-"),
+        //     sortable: true,
+        // },
+
+        // {
+        //     name: "Kampagne Id",
+        //     selector: (row: any) => (row?.campaignId ? row?.campaignId : "-"),
+        //     sortable: true,
+        // },
+        // {
+        //     name: "Kampagne name",
+        //     selector: (row: any) => (row?.campaignName ? row?.campaignName : "-"),
+        //     sortable: true,
+        // },
+
+
+
+        // {
+        //     name: "istBio",
+        //     selector: (row: any) => (row?.isOrganic ? row?.isOrganic : "-"),
+        //     sortable: true,
+        // },
 
         // wewewewe
 
