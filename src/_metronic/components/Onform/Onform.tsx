@@ -485,36 +485,37 @@ export default function Onform() {
         // },
 
         // wewewewe
-
+        {
+            name: "hast_du_bereits_vertriebserfahrung?",
+            selector: (row: any) => (row?.hast ? row?.hast : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+        {
+            name: "wann_könntest_du_starten?",
+            selector: (row: any) => (row?.hastNo ? row?.hastNo : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
         
         {
             name: "SMS vorher ",
             selector: (row: any) => (row?.sms ? (row?.sms === true ? "yes" : "no") : "-"),
             // selector: (row: any) => row?.createdAt,
-
-
         },
         {
             name: "Kontaktiert durch",
             selector: (row: any) => (row?.contactedBy ? row?.contactedBy : "-"),
             // selector: (row: any) => row?.createdAt,
-
-
         },
         {
             name: "Kontaktiert am",
             selector: (row: any) => (row?.contactedOn ? `${moment(row?.contactedOn).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
-
-
         },
 
         {
             name: "erneut kontaktiert",
             selector: (row: any) => (row?.contactedAgain ? `${moment(row?.contactedAgain).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
-
-
         },
         {
             name: "letzmalige Kontaktaufnahme",
