@@ -362,6 +362,11 @@ export default function Onform() {
             sortable: true,
 
         },
+         {
+            name: "Datum",
+            selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
+            width: "4%"
+        },
         {
             name: "Vorname",
             selector: (row: any) => (row?.fname ? row?.fname : "-"),
@@ -406,11 +411,7 @@ export default function Onform() {
             },
             width: "5%"
         },
-        // {
-        //     name: "Datum",
-        //     selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
-        //     width: "4%"
-        // },
+       
         // {
         //     name: "FormId",
         //     // selector: (row: any) => (row?.formId ? row?.formId : "-"),
@@ -521,21 +522,17 @@ export default function Onform() {
             name: "letzmalige Kontaktaufnahme",
             selector: (row: any) => (row?.lastContact ? `${moment(row?.lastContact).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
-
-
         },
 
         {
             name: "E-Mail bei 3 mal nicht erreicht",
             selector: (row: any) => (row?.emailFailed ? (row?.emailFailed === true ? "yes" : "no") : "-"),
             // selector: (row: any) => row?.createdAt,
-
         },
         {
             name: "PV",
             selector: (row: any) => (row?.pv ? (row?.pv === true ? "yes" : "no") : "-"),
             // selector: (row: any) => row?.createdAt,
-
         },
 
         {
@@ -544,8 +541,6 @@ export default function Onform() {
             // selector: (row: any) => row?.createdAt,
 
         },
-
-
         {
             name: "Termin am",
             selector: (row: any) => (row?.appointmentDate ? `${moment(row?.appointmentDate).utc().format("DD/MM/YYYY")}` : "-"),

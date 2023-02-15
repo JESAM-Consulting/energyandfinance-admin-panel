@@ -363,6 +363,11 @@ export default function Onform() {
 
         },
         {
+            name: "Datum",
+            selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
+            width: "5%"
+        },
+        {
             name: "Vorname",
             selector: (row: any) => (row?.firstName ? row?.firstName : "-"),
             sortable: true,
@@ -406,11 +411,7 @@ export default function Onform() {
             },
             width: "5%"
         },
-        // {
-        //     name: "Datum",
-        //     selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
-        //     width: "4%"
-        // },
+        
         // {
         //     name: "FormId",
         //     // selector: (row: any) => (row?.formId ? row?.formId : "-"),
