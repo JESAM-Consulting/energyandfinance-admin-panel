@@ -26,6 +26,8 @@ export default function Onform() {
     const [getAllCompany, setGetAllCompany] = useState<any>({});
     const [showMore, setShowMore] = useState<any>(false);
     const [showMoreDetail, setShowMoreDetail] = useState<any>({});
+    console.log("getAllCompany",getAllCompany);
+    
     //for pagation
     const [search, setSearch] = useState<any>();
     const [page, setPage] = useState<any>(1);
@@ -275,7 +277,7 @@ export default function Onform() {
 
 
                                     {
-                                        row?.emailFailed === null ?
+                                        row?.nichtGeeignet === false && row?.emailFailed === null  ?
 
                                             !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
                                                 <div className="color-red"></div>
@@ -589,7 +591,7 @@ export default function Onform() {
                 <div className="p-2 mb-2">
                     <div className="row mb-4 pr-3">
                         <div className="col d-flex justify-content-between">
-                            <h2 className="pl-3 pt-2">On form</h2>
+                            <h2 className="pl-3 pt-2">Landing Page</h2>
                         </div>
                     </div>
                     <div className="row">

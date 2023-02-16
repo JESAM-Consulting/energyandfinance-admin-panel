@@ -214,10 +214,9 @@ export default function UpdateOnform(props: any) {
                                 defaultValue={teamData?.sms === true ? "true" : "false"}
                             >
                                 <option value="select for sms" selected disabled>
-                                    select sms
-                                </option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
+                                Auswahl                                </option>
+                                <option value="true">Ja</option>
+                                <option value="false">Nein</option>
                             </select>
                         </div>
                         <span
@@ -421,10 +420,10 @@ export default function UpdateOnform(props: any) {
                                 // defaultValue="true"
                             >
                                 <option value="null" selected >
-                                    select Erreicht
+                                Auswahl
                                 </option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
+                                <option value="true">Ja</option>
+                                <option value="false">Nein</option>
                             </select>
                         </div>
                         <span

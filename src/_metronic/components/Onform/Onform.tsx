@@ -275,7 +275,7 @@ export default function Onform() {
 
 
                                     {
-                                        row?.emailFailed === null ?
+                                        row?.nichtGeeignet === false && row?.emailFailed === null  ?
 
                                             !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
                                                 <div className="color-red"></div>

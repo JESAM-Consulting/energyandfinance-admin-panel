@@ -197,27 +197,28 @@ export default function LandingPage(props: any) {
         <>
 
             <div className="ml-40 margin-left-remove">
-
+                        {console.log("teamDarrrta",teamData)
+                        }
 
                 <div className="form-group row">
                     <label className="col-xl-3 col-lg-3 col-form-label">
-                        SMS vorher
+                        SMS vorher ff
                     </label>
                     <div className="col-lg-9 col-xl-6">
                         <div >
                             <select
+                                name="sms"
+                                id="sms"
                                 className={`form-control form-control-lg form-control-solid `}
+                                // defaultValue={teamData?.sms === true ? "true" : "false"}
+                                defaultValue={teamData?.sms === true ? "true" : teamData?.sms === false ? "false" : ""}
                                 onChange={(e) => {
                                     onhandleChange(e);
                                 }}
-                                name="sms"
-                                defaultValue={teamData?.sms === true ? "true" : "false"}
                             >
-                                <option value="select for sms" selected disabled>
-                                    select sms
-                                </option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
+                                <option value="" disabled selected>Auswahl</option>
+                                <option value="true">Ja</option>
+                                <option value="false">Nein</option>
                             </select>
                         </div>
                         <span
@@ -421,10 +422,10 @@ export default function LandingPage(props: any) {
                                 // defaultValue="true"
                             >
                                 <option value="null" selected >
-                                    select Erreicht
+                                Auswahl
                                 </option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
+                                <option value="true">Ja</option>
+                                <option value="false">Nein</option>
                             </select>
                         </div>
                         <span
