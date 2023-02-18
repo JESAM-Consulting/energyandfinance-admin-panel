@@ -395,8 +395,17 @@ export default function Onform() {
         },
         {
             name: "Kontakt",
-            selector: (row: any) => (row?.phone ? row?.phone : "-"),
-            sortable: true,
+            cell: (row:any) =>{
+                return(
+                    <>
+                      <a href={`tel:${row?.phone}`} style={{color:"black"}}>
+                      <p>{(row?.phone ? row?.phone : "-")}</p>
+                      </a>
+                    </>
+                )
+            },
+            width: "7%",
+
         },
         {
             name: "Bundesland",
@@ -508,8 +517,6 @@ export default function Onform() {
             name: "Kontaktiert am",
             selector: (row: any) => (row?.contactedOn ? `${moment(row?.contactedOn).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
-
-
         },
 
         {
