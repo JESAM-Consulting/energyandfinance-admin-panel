@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { ApiGet,ApiDelete, ApiPut, ApiPost } from "../../../helpers/API/ApiData"
+import { ApiGet, ApiDelete, ApiPut, ApiPost } from "../../../helpers/API/ApiData"
 import { toast, ToastContainer } from "react-toastify";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import { Tooltip } from "@material-ui/core";
@@ -43,7 +43,7 @@ export default function Qualifiziert() {
     var lastDay = new Date();
     const [startDate, setStartDate] = useState<any>(firstDay);
     // console.log("SdsffsfstartDate",startDate);
-    
+
 
     // const [startDate, setStartDate] = useState<any>();
     const [endDate, setEndDate] = useState(lastDay);
@@ -109,7 +109,7 @@ export default function Qualifiziert() {
                     toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
                 }
             })
-            .catch((err:any) => {
+            .catch((err: any) => {
                 toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
             });
 
@@ -239,17 +239,17 @@ export default function Qualifiziert() {
         },
     };
 
-    const handleOnChnageAddImg = async(e: any) => {
+    const handleOnChnageAddImg = async (e: any) => {
         e.preventDefault();
         if (e.target.files[0]) {
 
             let formData = new FormData();
             formData.append("uploadExcel", e.target.files[0]);
-           
+
             await ApiPost("qualify/bulk-write", formData)
                 .then((res) => {
-                
-                   toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
+
+                    toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
                 })
                 .catch((err) => {
                     toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
@@ -276,7 +276,7 @@ export default function Qualifiziert() {
 
 
                                     {
-                                        row?.nichtGeeignet === false && row?.emailFailed === null  ?
+                                        row?.nichtGeeignet === false && row?.emailFailed === null ?
 
                                             !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
                                                 <div className="color-red"></div>
@@ -320,8 +320,8 @@ export default function Qualifiziert() {
                             <i className="fa-solid fa-pencil" style={{ cursor: "pointer", color: "black" }} onClick={(e) => {
                                 setAdsData(true)
                                 setIdForAdsData(row?._id)
-                                console.log("sfdsdf",row);
-                                
+                                console.log("sfdsdf", row);
+
                                 setPerentEditData({
                                     sms: row?.sms,
                                     contactedBy: row?.contactedBy,
@@ -341,21 +341,21 @@ export default function Qualifiziert() {
 
                             }}></i>
                         </div>
-                        {userInfo?.adminEmail === "admin@jesamconsulting.com"  && (
-                              <div
-                              data-toggle="modal"
-                              data-target="#exampleModal"
-                              className="cursor-pointer"
-                              onClick={(e) => {
-                                  // deletejobData();
-                                  setIdForAdsData(row?._id)
-                                  setShow(true);
-                              }}
-                          >
-                              <Tooltip title="Arbeit löschen" arrow>
-                                  <DeleteIcon />
-                              </Tooltip>
-                          </div>
+                        {userInfo?.adminEmail === "admin@jesamconsulting.com" && (
+                            <div
+                                data-toggle="modal"
+                                data-target="#exampleModal"
+                                className="cursor-pointer"
+                                onClick={(e) => {
+                                    // deletejobData();
+                                    setIdForAdsData(row?._id)
+                                    setShow(true);
+                                }}
+                            >
+                                <Tooltip title="Arbeit löschen" arrow>
+                                    <DeleteIcon />
+                                </Tooltip>
+                            </div>
                         )}
                     </>
                 );
@@ -506,6 +506,11 @@ export default function Qualifiziert() {
                                     placeholder="Suche"
                                 />
                             </div>
+                            <div>
+
+
+                            </div>
+
                         </div>
                         <div className="col-lg-4 new-margin-bottom-alignment">
                             <DatePicker
@@ -520,7 +525,20 @@ export default function Qualifiziert() {
 
 
                         </div>
-                    
+
+                        <Tooltip title="Dokument hochladen" arrow>
+                            <div className="add-alignment col-lg-2 text-right">
+
+                                <i className="fa-solid fa-plus plus-icon"></i>
+                                <input type="file"
+                                    name="uploadExcel"
+                                    id="uploadStoreImage"
+                                    accept=".csv"
+                                    onChange={(e) => handleOnChnageAddImg(e)} />
+                            </div>
+
+                        </Tooltip>
+
                         {/* <button className="btn btn-success" style={{
                             backgroundColor: "#9dbc78",
                             border: "none",
@@ -559,24 +577,24 @@ export default function Qualifiziert() {
                             setCountPerPage(rowPerPage);
                         }}
                     />}
-                      <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title className="text-danger">Alarm!</Modal.Title>
-                </Modal.Header>
-                <Modal.Body> Sind Sie sicher, dass Sie diese Daten löschen möchten?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Nein
-                    </Button>
-                    <Button
-                        variant="success"
-                        className="ja-button-background-color"
-                        onClick={() => deleteGreenData()}
-                    >
-                        Ja
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title className="text-danger">Alarm!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body> Sind Sie sicher, dass Sie diese Daten löschen möchten?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Nein
+                        </Button>
+                        <Button
+                            variant="success"
+                            className="ja-button-background-color"
+                            onClick={() => deleteGreenData()}
+                        >
+                            Ja
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
             {
                 showMore === true ? (
