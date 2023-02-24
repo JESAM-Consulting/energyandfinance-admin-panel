@@ -8,9 +8,10 @@ import moment from "moment";
 
 
 
-export default function UpdateOnform(props: any) {
+export default function UploadQualifiziert(props: any) {
     const { idForAdsData, setAdsData, perentEditData ,getAllCompanyData,setPerentEditData} = props
 
+    console.log("perentEditData3", perentEditData);
 
     const [teamData, setTeamData] = useState<any>({
         sms: (perentEditData?.sms === null ? "" : (perentEditData?.sms === true ? true : false)),
@@ -29,6 +30,8 @@ export default function UpdateOnform(props: any) {
 
     });
 
+    console.log("teamee4Data",teamData);
+    
 
     const [addTeamData, setAddTeamData] = useState<any>(false);
     const [errors, setErrors] = useState<any>({});
@@ -112,7 +115,9 @@ export default function UpdateOnform(props: any) {
 
     }
 
-  
+    console.log("teamDatadsf", teamData);
+    console.log("sdfsdgs",teamData?.appointmentDate);
+
 
     //Api For add company data
     const addTeam = async (e: any) => {
@@ -135,19 +140,19 @@ export default function UpdateOnform(props: any) {
             pv: teamData?.pv,
 
         }
-        await ApiPut(`update?id=${idForAdsData}`, data)
+        await ApiPut(`qualify/update?id=${idForAdsData}`, data)
             .then((res: any) => {
                 toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
                 setAdsData(false)
                 setIsEditApi(false);
-                setTeamData({});                                                                
+                setTeamData({});
                 getAllCompanyData();
                 getAllTeamData()
                 // setTeamData({});
                 setLoader(false)
 
             })
-            .catch((err) => {
+            .catch((err:any) => {
                 toast.error("Etwas ist schief gelaufen. Bitte versuche es erneut")
                 setLoader(false)
 
@@ -214,7 +219,8 @@ export default function UpdateOnform(props: any) {
                                 defaultValue={teamData?.sms === true ? "true" : "false"}
                             >
                                 <option value="select for sms" selected disabled>
-                                Auswahl                                </option>
+                                    Auswahl
+                                </option>
                                 <option value="true">Ja</option>
                                 <option value="false">Nein</option>
                             </select>
@@ -420,8 +426,7 @@ export default function UpdateOnform(props: any) {
                                 // defaultValue="true"
                             >
                                 <option value="null" selected >
-                                Auswahl
-                                </option>
+                                Auswahl                                </option>
                                 <option value="true">Ja</option>
                                 <option value="false">Nein</option>
                             </select>

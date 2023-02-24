@@ -17,10 +17,10 @@ import { Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
 import moment from "moment";
-import UpdateOnform from "./UpdateOnform";
+import UploadQualifiziert from "../UploadQualifiziert/UploadQualifiziert";
 // import ManageRecruiting2 from "../../../components/ManageRecruiting/ManageRecruiting2/ManageRecruiting2";
 
-export default function Onform() {
+export default function Qualifiziert() {
 
     const [getAllCompany, setGetAllCompany] = useState<any>({});
     const [showMore, setShowMore] = useState<any>(false);
@@ -42,7 +42,7 @@ export default function Onform() {
     var firstDay = new Date(2022, 9, 1);
     var lastDay = new Date();
     const [startDate, setStartDate] = useState<any>(firstDay);
-    console.log("getAllCompany",getAllCompany);
+    // console.log("SdsffsfstartDate",startDate);
     
 
     // const [startDate, setStartDate] = useState<any>();
@@ -70,23 +70,25 @@ export default function Onform() {
     const getAllCompanyData = async () => {
         setLoaderForGetAll(true)
         if (!search) {
-            await ApiGet(`find?page=${page}&limit=${countPerPage}`)
-            // &startDate=${(moment(startDate).format("YYYY-MM-DD"))}&endDate=${(moment(endDate).format("YYYY-MM-DD"))}`)
+            await ApiGet(`qualify/find?page=${page}&limit=${countPerPage}&startDate=${(moment(startDate).format("YYYY-MM-DD"))}&endDate=${(moment(endDate).format("YYYY-MM-DD"))}`)
                 .then((res: any) => {
                     console.log("resresres", res);
+
                     setGetAllCompany(res?.data?.data);
-                    setCount(res?.data?.total);
+                    setCount(res?.data?.payload?.count);
                     setLoaderForGetAll(false)
+
                 })
                 .catch((err: any) => {
                     setLoaderForGetAll(false)
+
                 })
         }
         else {
-            await ApiGet(`find?search=${search}&page=${page}&limit=${countPerPage}`)
+            await ApiGet(`applyContactForm/find?letter=${search}&page=${page}&limit=${countPerPage}`)
                 .then((res: any) => {
-                    setGetAllCompany(res?.data?.data);
-                    setCount(res?.data?.total);
+                    setGetAllCompany(res?.data?.payload?.data);
+                    setCount(res?.data?.payload?.count);
                     setLoaderForGetAll(false)
                 })
                 .catch((err: any) => {
@@ -96,7 +98,7 @@ export default function Onform() {
 
     }
     const deleteGreenData = async () => {
-        await ApiDelete(`delete?id=${idForAdsData}`)
+        await ApiDelete(`qualify/delete?id=${idForAdsData}`)
             .then((res: any) => {
                 if (res?.status === 200) {
                     toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.");
@@ -238,20 +240,19 @@ export default function Onform() {
     };
 
     const handleOnChnageAddImg = async(e: any) => {
-        console.log("eeffefef",e);
-        
+        e.preventDefault();
         if (e.target.files[0]) {
+
             let formData = new FormData();
             formData.append("uploadExcel", e.target.files[0]);
            
-            await ApiPost("bulk-write", formData)
+            await ApiPost("qualify/bulk-write", formData)
                 .then((res) => {
+                
                    toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
-                   getAllCompanyData();
-                e.preventDefault();
                 })
                 .catch((err) => {
-                    toast.error(err?.response?.data?.message?.startsWith("Ungültiger") ? err?.response?.data?.message  : "Etwas ist schief gelaufen.Bitte versuche es erneut");
+                    toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
                 });
         } else {
             toast.error("Please Select Excel File !");
@@ -316,11 +317,11 @@ export default function Onform() {
                 return (
                     <>
                         <div>
-
                             <i className="fa-solid fa-pencil" style={{ cursor: "pointer", color: "black" }} onClick={(e) => {
                                 setAdsData(true)
                                 setIdForAdsData(row?._id)
-
+                                console.log("sfdsdf",row);
+                                
                                 setPerentEditData({
                                     sms: row?.sms,
                                     contactedBy: row?.contactedBy,
@@ -340,32 +341,27 @@ export default function Onform() {
 
                             }}></i>
                         </div>
-
-                        {userInfo?.adminEmail === "admin@jesamconsulting.com" && (
-                            <div
-                                data-toggle="modal"
-                                data-target="#exampleModal"
-                                className="cursor-pointer"
-                                onClick={(e) => {
-                                    setIdForAdsData(row?._id)
-                                    setShow(true);
-                                }}
-                            >
-                                <Tooltip title="Arbeit löschen" arrow>
-                                    <DeleteIcon />
-                                </Tooltip>
-                            </div>
+                        {userInfo?.adminEmail === "admin@jesamconsulting.com"  && (
+                              <div
+                              data-toggle="modal"
+                              data-target="#exampleModal"
+                              className="cursor-pointer"
+                              onClick={(e) => {
+                                  // deletejobData();
+                                  setIdForAdsData(row?._id)
+                                  setShow(true);
+                              }}
+                          >
+                              <Tooltip title="Arbeit löschen" arrow>
+                                  <DeleteIcon />
+                              </Tooltip>
+                          </div>
                         )}
                     </>
                 );
             },
             sortable: true,
 
-        },
-         {
-            name: "Datum",
-            selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
-            width: "4%"
         },
         {
             name: "Vorname",
@@ -379,177 +375,82 @@ export default function Onform() {
         },
         {
             name: "E-mail",
-            cell: (row: any, index: any) => {
-                return (
-
-                    <>
-                        <div className="showmore-class text-justify p-2">
-                            {!row.email ? "-" : row?.email}
-                        </div>
-                    </>
-                );
-            },
-            width: "9%",
+            selector: (row: any) => (row?.email ? row?.email : "-"),
+            sortable: true,
         },
         {
             name: "Kontakt",
-            cell: (row:any) =>{
-                return(
-                    <>
-                      <a href={`tel:${row?.phone}`} style={{color:"black"}}>
-                      <p>{(row?.phone ? row?.phone : "-")}</p>
-                      </a>
-                    </>
-                )
-            },
-            width: "7%",
-
+            selector: (row: any) => (row?.phone ? row?.phone : "-"),
+            width: "8%"
         },
         {
-            name: "Bundesland",
-            // selector: (row: any) => (row?.bundesland ? row?.bundesland : "-"),
-            cell: (row: any, index: any) => {
-                return (
-
-                    <>
-                        <div className="showmore-class text-justify p-2">
-                            {!row.bundesland ? "-" : row?.bundesland}
-                        </div>
-                    </>
-                );
-            },
-            width: "5%"
-        },
-       
-        // {
-        //     name: "FormId",
-        //     // selector: (row: any) => (row?.formId ? row?.formId : "-"),
-        //     cell: (row: any, index: any) => {
-        //         return (
-
-        //             <>
-        //                 <div className="showmore-class text-justify p-2">
-        //                     {!row.formId ? "-" : row?.formId}
-        //                 </div>
-        //             </>
-        //         );
-        //     },
-        //     width: "6%"
-        // },
-        // {
-        //     name: "Formularname",
-        //     // selector: (row: any) => (row?.formName ? row?.formName : "-"),
-        //     cell: (row: any, index: any) => {
-        //         return (
-
-        //             <>
-        //                 <div className="showmore-class text-justify p-2">
-        //                     {!row.formName ? "-" : row?.formName}
-        //                 </div>
-        //             </>
-        //         );
-        //     },
-        //     width: "8%"
-        // },
-
-        // AD - fields 
-        // {
-        //     name: "AdId",
-        //     selector: (row: any) => (row?.adId ? row?.adId : "-"),
-            
-        //     sortable: true,
-        // },
-        // {
-        //     name: "Adname",
-        //     selector: (row: any) => (row?.adName ? row?.adName : "-"),
-        //     sortable: true,
-        // },
-        // {
-        //     name: "Adsetname",
-        //     selector: (row: any) => (row?.adsetName ? row?.adsetName : "-"),
-        //     sortable: true,
-        // },
-        // {
-        //     name: "AdsetId",
-        //     selector: (row: any) => (row?.adsetId ? row?.adsetId : "-"),
-        //     sortable: true,
-        // },
-
-        // {
-        //     name: "Kampagne Id",
-        //     selector: (row: any) => (row?.campaignId ? row?.campaignId : "-"),
-        //     sortable: true,
-        // },
-        // {
-        //     name: "Kampagne name",
-        //     selector: (row: any) => (row?.campaignName ? row?.campaignName : "-"),
-        //     sortable: true,
-        // },
-
-
-
-        // {
-        //     name: "istBio",
-        //     selector: (row: any) => (row?.isOrganic ? row?.isOrganic : "-"),
-        //     sortable: true,
-        // },
-
-        // wewewewe
-        {
-            name: "hast_du_bereits_vertriebserfahrung?",
-            selector: (row: any) => (row?.hast ? row?.hast : "-"),
-            // selector: (row: any) => row?.createdAt,
+            name: "Postleitzahl",
+            selector: (row: any) => (row?.postalCode ? row?.postalCode : "-"),
+            sortable: true,
         },
         {
-            name: "wann_könntest_du_starten?",
-            selector: (row: any) => (row?.hastNo ? row?.hastNo : "-"),
-            // selector: (row: any) => row?.createdAt,
+            name: "Datum",
+            selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
+            width: "10%"
         },
-        
         {
             name: "SMS vorher ",
             selector: (row: any) => (row?.sms ? (row?.sms === true ? "Ja" : "Nein") : "-"),
             // selector: (row: any) => row?.createdAt,
+
+
         },
         {
             name: "Kontaktiert durch",
             selector: (row: any) => (row?.contactedBy ? row?.contactedBy : "-"),
             // selector: (row: any) => row?.createdAt,
+
+
         },
         {
             name: "Kontaktiert am",
             selector: (row: any) => (row?.contactedOn ? `${moment(row?.contactedOn).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
+
+
         },
 
         {
             name: "erneut kontaktiert",
             selector: (row: any) => (row?.contactedAgain ? `${moment(row?.contactedAgain).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
+
+
         },
         {
             name: "letzmalige Kontaktaufnahme",
             selector: (row: any) => (row?.lastContact ? `${moment(row?.lastContact).utc().format("DD/MM/YYYY")}` : "-"),
             // selector: (row: any) => row?.createdAt,
+
+
         },
 
         {
             name: "E-Mail bei 3 mal nicht erreicht",
-            selector: (row: any) => (row?.emailFailed ? (row?.emailFailed === true ? "yes" : "no") : "-"),
+            selector: (row: any) => (row?.emailFailed ? (row?.emailFailed === true ? "Ja" : "Nein") : "-"),
             // selector: (row: any) => row?.createdAt,
+
         },
         {
             name: "PV",
-            selector: (row: any) => (row?.pv ? (row?.pv === true ? "yes" : "no") : "-"),
+            selector: (row: any) => (row?.pv ? (row?.pv === true ? "Ja" : "Nein") : "-"),
             // selector: (row: any) => row?.createdAt,
+
         },
 
         {
             name: "Erreicht ",
-            selector: (row: any) => (row?.reached ? (row?.reached === true ? "yes" : "no") : "-"),
+            selector: (row: any) => (row?.reached ? (row?.reached === true ? "Ja" : "Nein") : "-"),
             // selector: (row: any) => row?.createdAt,
 
         },
+
+
         {
             name: "Termin am",
             selector: (row: any) => (row?.appointmentDate ? `${moment(row?.appointmentDate).utc().format("DD/MM/YYYY")}` : "-"),
@@ -581,11 +482,7 @@ export default function Onform() {
             selector: (row: any) => (row?.nichtGeeignet ? (row?.nichtGeeignet === true ? "yes" : "no") : "-"),
             // selector: (row: any) => row?.createdAt,
         },
-
-
-
     ];
-
     return (
         <>
             <div className="card p-1">
@@ -593,10 +490,11 @@ export default function Onform() {
                 <div className="p-2 mb-2">
                     <div className="row mb-4 pr-3">
                         <div className="col d-flex justify-content-between">
-                            <h2 className="pl-3 pt-2">On form</h2>
+                            <h2 className="pl-3 pt-2">Qualifiziert</h2>
                         </div>
                     </div>
                     <div className="row">
+
                         <div className="col-lg-6 new-margin-bottom-alignment">
                             <div>
                                 <input
@@ -610,7 +508,7 @@ export default function Onform() {
                             </div>
                         </div>
                         <div className="col-lg-4 new-margin-bottom-alignment">
-                            {/* <DatePicker
+                            <DatePicker
                                 dateFormat="dd/MM/yyyy"
                                 selected={startDate}
                                 className={`form-control form-control-lg form-control-solid `}
@@ -618,42 +516,11 @@ export default function Onform() {
                                 startDate={startDate}
                                 endDate={endDate}
                                 selectsRange
-                            /> */}
+                            />
 
 
                         </div>
-                        <div className="col-lg-2 d-flex justify-content-end align-items-center button-mobile-view-center-alignment">
-                            {/* <button
-                                className="btn btn-success"
-                                onClick={() => {
-                                    exportToCSV(getAllCompany, "Verbraucherstelle");
-                                }}
-
-                                style={{
-                                    backgroundColor: "#9dbc78",
-                                    border: "none"
-                                }}
-                            >
-                                Excel Download
-                            </button> */}
-                            <div>
-                            {userInfo?.adminEmail === "admin@jesamconsulting.com" && (
-                                <Tooltip title="Dokument hochladen" arrow>
-                                        <div className="add-alignment">
-
-                                            <i className="fa-solid fa-plus plus-icon"></i>
-                                            <input type="file"
-                                            name="uploadExcel"
-                                            id="uploadStoreImage"
-                                            accept=".csv"
-                                                onChange={(e) => handleOnChnageAddImg(e)} />
-                                        </div>
-
-                                </Tooltip>
-                            )}
-                            </div>
-
-                        </div>
+                    
                         {/* <button className="btn btn-success" style={{
                             backgroundColor: "#9dbc78",
                             border: "none",
@@ -771,7 +638,7 @@ export default function Onform() {
                     </Toolbar>
 
                     <div>
-                        <UpdateOnform perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} />
+                        <UploadQualifiziert perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} />
                     </div>
                 </Dialog>
             ) : null}

@@ -13,13 +13,13 @@ export default function LandingPage(props: any) {
 
 
     const [teamData, setTeamData] = useState<any>({
-        sms:(perentEditData?.sms === null ? "" : (perentEditData?.sms === "true" ? true : false)),
+        sms: (perentEditData?.sms === null ? "" : (perentEditData?.sms === true ? true : false)),
         contactedBy: perentEditData?.contactedBy,
         contactedOn: (moment(perentEditData?.contactedOn).format("YYYY-MM-DD")),
         contactedAgain: (moment(perentEditData?.contactedAgain).format("YYYY-MM-DD")),
         lastContact: (moment(perentEditData?.lastContact).format("YYYY-MM-DD")),
         emailFailed: perentEditData?.emailFailed,
-        reached: perentEditData?.reached === "true" ? true : perentEditData?.reached === "false" ? false : null,
+        reached: perentEditData?.reached,
         appointmentDate:(moment(perentEditData?.appointmentDate).format("YYYY-MM-DD")),
         appointmentTime: perentEditData?.appointmentTime,
         makeAppointment: perentEditData?.makeAppointment,
@@ -120,13 +120,13 @@ export default function LandingPage(props: any) {
         // if (formValidation()) {
         setLoader(true)
         let data = {
-            sms: teamData?.sms === "true" ? true : false,
+            sms: teamData?.sms === "true" ||  teamData?.sms === true  ? true : teamData?.sms === "false" ||  teamData?.sms === false ? false : null,
             contactedBy: teamData?.contactedBy,
             contactedOn: teamData?.contactedOn === "Invalid date" ? null : teamData?.contactedOn,
             contactedAgain: teamData?.contactedAgain === "Invalid date" ? null : teamData?.contactedAgain,
             lastContact: teamData?.lastContact === "Invalid date" ? null : teamData?.lastContact,
             emailFailed: teamData?.emailFailed,
-            reached: teamData?.reached === "true" ? true : false,
+            reached: teamData?.reached === "true" || teamData?.reached === true ? true : teamData?.reached === "false" || teamData?.reached === false ? false : null,
             appointmentDate: teamData?.appointmentDate === "Invalid date" ? null : teamData?.appointmentDate ,
             appointmentTime: teamData?.appointmentTime,
             makeAppointment: teamData?.makeAppointment,
@@ -216,7 +216,7 @@ export default function LandingPage(props: any) {
                                     onhandleChange(e);
                                 }}
                             >
-                                <option value="" disabled selected>Auswahl</option>
+                                <option value=""  selected disabled>Auswahl</option>
                                 <option value="true">Ja</option>
                                 <option value="false">Nein</option>
                             </select>
@@ -421,7 +421,7 @@ export default function LandingPage(props: any) {
                                 defaultValue={teamData?.reached === true ? "true" : teamData?.reached === false ? "false" : ""}
                                 // defaultValue="true"
                             >
-                                <option value="null" selected >
+                                <option value="null" selected disabled>
                                 Auswahl
                                 </option>
                                 <option value="true">Ja</option>

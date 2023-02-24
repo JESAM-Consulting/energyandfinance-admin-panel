@@ -68,6 +68,20 @@ export function AsideMenuList({ layoutProps }: any) {
                 <span className="menu-text">On form</span>
               </NavLink>
             </li>
+            <li
+              className={`menu-item ${getMenuItemActive("/Qualifiziert", false)}`}
+              aria-haspopup="true"
+            >
+              <NavLink className="menu-link" to="/Qualifiziert">
+                <span className="svg-icon menu-icon">
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ fontSize: "13px", color: "#383839" }}
+                  ></i>
+                </span>
+                <span className="menu-text">Qualifiziert</span>
+              </NavLink>
+            </li>
            
           </>
       </ul>

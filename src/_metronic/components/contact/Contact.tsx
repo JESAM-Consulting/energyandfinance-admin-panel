@@ -501,7 +501,7 @@ export default function Onform() {
         
         {
             name: "SMS vorher ",
-            selector: (row: any) => (row?.sms ? (row?.sms === true ? "yes" : "no") : "-"),
+            selector: (row: any) => (row?.sms ? (row?.sms === true ? "Ja" : "Nein") : "-"),
             // selector: (row: any) => row?.createdAt,
 
 
