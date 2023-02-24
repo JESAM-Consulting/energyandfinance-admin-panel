@@ -10,12 +10,17 @@ export function Dashboard() {
 
   const [contact1, setContact1] = useState<any>();
   const [interview4, setInterview4] = useState<any>();
+  const [onForm1, setOnForm] = useState<any>();
+  const [ads4, setAds4] = useState<any>();
   const history = useHistory<any>();
 const BaseApi_URL = "https://fe-lead-commen-api.rejoicehub.com/FE_API/lead_api/v1/"
+console.log("ads4ads4",ads4);
 
   useEffect(() => {
 
     getAllInterviewFour();
+    GetOnForm();
+    getQualifiziert();
   }, [])
   const getAllInterviewFour = async () => {
      axios.get(`${BaseApi_URL}/get-energy-form`)
@@ -23,11 +28,33 @@ const BaseApi_URL = "https://fe-lead-commen-api.rejoicehub.com/FE_API/lead_api/v
         console.log("****",res)
         setInterview4(res?.data?.count);
       })
+  }
+
+  
+  const GetOnForm = async () => {
+    await ApiGet(`find`)
+      .then((res: any) => {
+        setOnForm(res?.data?.total);
+      })
+
+  }
+
+  const getQualifiziert = async () => {
+    await ApiGet(`qualify/find`)
+      .then((res: any) => {
+        setAds4(res?.data?.total);
+      })
 
   }
 
   const jumpOnContact1 = (e: any) => {
     history.push("/contact")
+  }
+  const jumpOnForm = (e: any) => {
+    history.push("/onform")
+  }
+  const jumpOnQualifiziert = (e: any) => {
+    history.push("/Qualifiziert")
   }
   return (
     <>
@@ -79,10 +106,70 @@ const BaseApi_URL = "https://fe-lead-commen-api.rejoicehub.com/FE_API/lead_api/v
                               </div>
 
                               <span className="font-weight-bold font-size-h3 d-block my-2 ml-3" style={{ cursor: "pointer" }} >
-                              Energy & Finance
+                              Lending page
                               </span>
                             </div>
                             <div className="showMore" onClick={(e) => jumpOnContact1(e)}>
+                              <span>  mehr anzeigen <span className="fa-solid fa-arrow-right-long ml-2"></span>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="p-6 rounded" style={{ backgroundColor: "#93c45e" }}>
+                            <div className="row">
+                              <div className="col-12">
+
+                                <div className="d-flex justify-content-between">
+                                  <div>
+                                    <h1 className="font-weight-bold" style={{ fontSize: "40px" }}>
+                                      {onForm1 && (
+                                        <CountUp end={onForm1} start={0} delay={1} />
+                                      )
+                                      }
+                                    </h1>
+                                  </div>
+                                  <div style={{ display: "flex", marginTop: "6px" }}>
+                                    <i className="fa-solid fa-user" style={{ fontSize: "25px", color: "gray" }}></i>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              <span className="font-weight-bold font-size-h3 d-block my-2 ml-3" style={{ cursor: "pointer" }} >
+                              On Form
+                              </span>
+                            </div>
+                            <div className="showMore" onClick={(e) => jumpOnForm(e)}>
+                              <span>  mehr anzeigen <span className="fa-solid fa-arrow-right-long ml-2"></span>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="p-6 rounded" style={{ backgroundColor: "#93c45e" }}>
+                            <div className="row">
+                              <div className="col-12">
+
+                                <div className="d-flex justify-content-between">
+                                  <div>
+                                    <h1 className="font-weight-bold" style={{ fontSize: "40px" }}>
+                                      {ads4 && (
+                                        <CountUp end={ads4} start={0} delay={1} />
+                                      )
+                                      }
+                                    </h1>
+                                  </div>
+                                  <div style={{ display: "flex", marginTop: "6px" }}>
+                                    <i className="fa-solid fa-user" style={{ fontSize: "25px", color: "gray" }}></i>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              <span className="font-weight-bold font-size-h3 d-block my-2 ml-3" style={{ cursor: "pointer" }} >
+                             Qualifiziert
+                              </span>
+                            </div>
+                            <div className="showMore" onClick={(e) => jumpOnQualifiziert(e)}>
                               <span>  mehr anzeigen <span className="fa-solid fa-arrow-right-long ml-2"></span>
                               </span>
                             </div>
