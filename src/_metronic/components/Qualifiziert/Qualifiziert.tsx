@@ -250,6 +250,7 @@ export default function Qualifiziert() {
                 .then((res) => {
 
                     toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
+                    getAllCompanyData();
                 })
                 .catch((err) => {
                     toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
@@ -402,6 +403,97 @@ export default function Qualifiziert() {
             name: "state",
             selector: (row: any) => (row?.state ? row?.state : "-"),
             sortable:true
+        },
+        {
+            name: "Datum",
+            selector: (row: any) => moment(row?.createdAt).format("DD/MM/YYYY"),
+            width: "4%"
+        },
+        // {
+        //     name: "hast_du_bereits_vertriebserfahrung?",
+        //     selector: (row: any) => (row?.hast ? row?.hast : "-"),
+        //     // selector: (row: any) => row?.createdAt,
+        // },
+        // {
+        //     name: "wann_könntest_du_starten?",
+        //     selector: (row: any) => (row?.hastNo ? row?.hastNo : "-"),
+        //     // selector: (row: any) => row?.createdAt,
+        // },
+        
+        {
+            name: "SMS vorher ",
+            selector: (row: any) => (row?.sms ? (row?.sms === true ? "Ja" : "Nein") : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+        {
+            name: "Kontaktiert durch",
+            selector: (row: any) => (row?.contactedBy ? row?.contactedBy : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+        {
+            name: "Kontaktiert am",
+            selector: (row: any) => (row?.contactedOn ? `${moment(row?.contactedOn).utc().format("DD/MM/YYYY")}` : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+
+        {
+            name: "erneut kontaktiert",
+            selector: (row: any) => (row?.contactedAgain ? `${moment(row?.contactedAgain).utc().format("DD/MM/YYYY")}` : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+        {
+            name: "letzmalige Kontaktaufnahme",
+            selector: (row: any) => (row?.lastContact ? `${moment(row?.lastContact).utc().format("DD/MM/YYYY")}` : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+
+        {
+            name: "E-Mail bei 3 mal nicht erreicht",
+            selector: (row: any) => (row?.emailFailed ? (row?.emailFailed === true ? "yes" : "no") : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+        {
+            name: "PV",
+            selector: (row: any) => (row?.pv ? (row?.pv === true ? "yes" : "no") : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+
+        {
+            name: "Erreicht ",
+            selector: (row: any) => (row?.reached ? (row?.reached === true ? "yes" : "no") : "-"),
+            // selector: (row: any) => row?.createdAt,
+
+        },
+        {
+            name: "Termin am",
+            selector: (row: any) => (row?.appointmentDate ? `${moment(row?.appointmentDate).utc().format("DD/MM/YYYY")}` : "-"),
+            // selector: (row: any) => row?.createdAt,
+
+
+        },
+        {
+            name: "Termin Uhrzeit",
+            selector: (row: any) => (row?.appointmentTime ? row?.appointmentTime : "-"),
+            // selector: (row: any) => row?.createdAt,
+
+
+        },
+        {
+            name: "Termin macht",
+            selector: (row: any) => (row?.makeAppointment ? row?.makeAppointment : "-"),
+            // selector: (row: any) => row?.createdAt,
+
+
+        },
+        {
+            name: "Wissenswertes",
+            selector: (row: any) => (row?.usefulInformation ? row?.usefulInformation : "-"),
+            // selector: (row: any) => row?.createdAt,
+        },
+        {
+            name: "nicht geeignet",
+            selector: (row: any) => (row?.nichtGeeignet ? (row?.nichtGeeignet === true ? "yes" : "no") : "-"),
+            // selector: (row: any) => row?.createdAt,
         },
 
 
