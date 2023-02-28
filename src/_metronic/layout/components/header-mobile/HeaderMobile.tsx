@@ -4,6 +4,8 @@ import objectPath from "object-path";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../_helpers";
 import { useHtmlClassService } from "../../_core/MetronicLayout";
+import Logo from "../../../layout/components/Logos/energy&finance 2.svg";
+
 
 export function HeaderMobile() {
     const uiService = useHtmlClassService();
@@ -34,7 +36,7 @@ export function HeaderMobile() {
             >
                 {/*begin::Logo*/}
                 <Link to="/">
-                    <img alt="logo" src="https://i.ibb.co/VHrdnwN/FE-Finance-1-e71732dd.png" style={{ width:"10%"}} />
+                    <img alt="logo" src={Logo} style={{ width:"10%"}} />
                 </Link>
                 {/*end::Logo*/}
 
