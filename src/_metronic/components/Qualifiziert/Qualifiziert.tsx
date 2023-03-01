@@ -85,9 +85,9 @@ export default function Qualifiziert() {
                 })
         }
         else {
-            await ApiGet(`applyContactForm/find?letter=${search}&page=${page}&limit=${countPerPage}`)
+            await ApiGet(`qualify/find?search=${search}&page=${page}&limit=${countPerPage}`)
                 .then((res: any) => {
-                    setGetAllCompany(res?.data?.payload?.data);
+                    setGetAllCompany(res?.data?.data);
                     setCount(res?.data?.total);
                     setLoaderForGetAll(false)
                 })
