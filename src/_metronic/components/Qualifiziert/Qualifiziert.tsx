@@ -75,7 +75,7 @@ export default function Qualifiziert() {
                     console.log("resresres", res);
 
                     setGetAllCompany(res?.data?.data);
-                    setCount(res?.data?.payload?.count);
+                    setCount(res?.data?.total);
                     setLoaderForGetAll(false)
 
                 })
@@ -88,7 +88,7 @@ export default function Qualifiziert() {
             await ApiGet(`applyContactForm/find?letter=${search}&page=${page}&limit=${countPerPage}`)
                 .then((res: any) => {
                     setGetAllCompany(res?.data?.payload?.data);
-                    setCount(res?.data?.payload?.count);
+                    setCount(res?.data?.total);
                     setLoaderForGetAll(false)
                 })
                 .catch((err: any) => {
