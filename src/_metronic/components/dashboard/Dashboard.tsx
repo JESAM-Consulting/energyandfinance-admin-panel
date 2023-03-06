@@ -106,7 +106,7 @@ console.log("ads4ads4",ads4);
                               </div>
 
                               <span className="font-weight-bold font-size-h3 d-block my-2 ml-3" style={{ cursor: "pointer" }} >
-                              Lending page
+                              Landing Page
                               </span>
                             </div>
                             <div className="showMore" onClick={(e) => jumpOnContact1(e)}>

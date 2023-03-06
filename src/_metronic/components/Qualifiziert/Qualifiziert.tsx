@@ -385,22 +385,22 @@ export default function Qualifiziert() {
             width: "8%"
         },
         {
-            name: "bist_du_derzeit_berufstätig?",
+            name: "berufstätig",
             selector: (row: any) => (row?.isEmployed ? row?.isEmployed : "-"),
             sortable:true
         },
         {
-            name: "wie_viel_vertriebserfahrung_hast_du?",
+            name: "Vertriebserfahrung",
             selector: (row: any) => (row?.salesExperience ? row?.salesExperience : "-"),
             sortable:true
         },
         {
-            name: "bitte_wähle_die_auf_dich_zutreffende_antwort_aus:_ich_bin_...",
+            name: "Alter",
             selector: (row: any) => (row?.answer ? row?.answer : "-"),
             sortable:true
         },
         {
-            name: "state",
+            name: "Bundesland",
             selector: (row: any) => (row?.state ? row?.state : "-"),
             sortable:true
         },
