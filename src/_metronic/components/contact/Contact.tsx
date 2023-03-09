@@ -39,6 +39,8 @@ export default function Onform() {
     const [perentEditData, setPerentEditData] = useState<any>({});
     const [show, setShow] = useState<any>(false);
     const [storeData, setStoreData] = useState({});
+    const [colorFilter, setColorFilter] = useState("all");
+
 
     let userInfo = getUserInfo();
     var date = new Date();
@@ -66,13 +68,28 @@ export default function Onform() {
 
 
     useEffect(() => {
-        getAllCompanyData();
+        getAllCompanyData(colorFilter);
 
-    }, [page, countPerPage, startDate, endDate]);
-    const getAllCompanyData = async () => {
+    }, [page, countPerPage, startDate, endDate,colorFilter]);
+    const getAllCompanyData = async (colorFilterData: any) => {
+        setColorFilter(colorFilterData)
+
+        const payload = {
+            page: page,
+            limit: countPerPage,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+            color: colorFilterData
+        }
+        const payloadAll = {
+            page: page,
+            limit: countPerPage,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+        }
         setLoaderForGetAll(true)
         if (!search) {
-            await ApiGet(`get-energy-form?page=${page}&limit=${countPerPage}`)
+            await ApiPost(`get-energy-form`,colorFilterData === "all" ? payloadAll : payload)
             // &startDate=${(moment(startDate).format("YYYY-MM-DD"))}&endDate=${(moment(endDate).format("YYYY-MM-DD"))}`)
                 .then((res: any) => {
                     console.log("resresres", res);
@@ -85,7 +102,23 @@ export default function Onform() {
                 })
         }
         else {
-            await ApiGet(`get-energy-form?search=${search}&page=${page}&limit=${countPerPage}`)
+           // ##
+           const payload = {
+            page: page,
+            limit: countPerPage,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+            color: colorFilterData,
+            search: search
+        }
+        const payloadAll = {
+            page: page,
+            limit: countPerPage,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+            search: search
+        }
+            await ApiPost(`get-energy-form`,colorFilterData === "all" ? payloadAll : payload)
                 .then((res: any) => {
                     setGetAllCompany(res?.data?.data);
                     setCount(res?.data?.count);
@@ -103,7 +136,7 @@ export default function Onform() {
                 if (res?.status === 200) {
                     toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.");
                     setShow(false);
-                    getAllCompanyData();
+                    getAllCompanyData(colorFilter);
 
                 } else {
                     toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
@@ -164,12 +197,12 @@ export default function Onform() {
             setPage(1);
             setCount(0);
             setCountPerPage(countPerPage);
-            getAllCompanyData();
+            getAllCompanyData(colorFilter);
         } else {
             setPage(1);
             setCount(0);
             setCountPerPage(countPerPage);
-            getAllCompanyData();
+            getAllCompanyData(colorFilter);
         }
     }, [debouncedSearchTerm]);
     const showAdsDataClose = (e: any) => {
@@ -249,7 +282,7 @@ export default function Onform() {
             await ApiPost("bulk-write", formData)
                 .then((res) => {
                    toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
-                   getAllCompanyData();
+                   getAllCompanyData(colorFilter);
                 e.preventDefault();
                 })
                 .catch((err) => {
@@ -277,7 +310,7 @@ export default function Onform() {
 
 
                                     {
-                                        row?.nichtGeeignet === false && row?.emailFailed === null  ?
+                                       ( row?.nichtGeeignet === false ||row?.nichtGeeignet=== null ) && row?.emailFailed === null  ?
 
                                             !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
                                                 <div className="color-red"></div>
@@ -668,7 +701,24 @@ export default function Onform() {
                             }}>Download with PV</button> */}
 
                     </div>
+                    <div className="d-flex align-items-center justify-content-center gallery-grid">
+                        <button className="all_filter" onClick={() => {
+                            getAllCompanyData("all")
+                        }}>Alle</button>
+                        <button className="green_filter" onClick={() => {
+                            getAllCompanyData("green")
+                        }}>Termin</button>
+                        <button className="orange_filter" onClick={() => {
+                            getAllCompanyData("orange")
+                        }}>in Bearbeitung</button>
+                        <button className="red_filter" onClick={() => {
+                            getAllCompanyData("red")
+                        }}>neu</button>
+                        <button className="black_filter" onClick={() => {
+                            getAllCompanyData("black")
 
+                        }}>nicht geeignet</button>
+                    </div>
                 </div>
                 {loaderForGetAll ?
                     <div className="text-center">
@@ -776,7 +826,7 @@ export default function Onform() {
                     </Toolbar>
 
                     <div>
-                        <LandingPage perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} />
+                        <LandingPage perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} colorFilter={colorFilter} />
                     </div>
                 </Dialog>
             ) : null}

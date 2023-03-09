@@ -43,6 +43,7 @@ export default function Qualifiziert() {
     var lastDay = new Date();
     const [startDate, setStartDate] = useState<any>(firstDay);
     // console.log("SdsffsfstartDate",startDate);
+    const [colorFilter, setColorFilter] = useState("all");
 
 
     // const [startDate, setStartDate] = useState<any>();
@@ -63,14 +64,31 @@ export default function Qualifiziert() {
 
 
     useEffect(() => {
-        getAllCompanyData();
+        getAllCompanyData(colorFilter);
 
-    }, [page, countPerPage, startDate, endDate]);
+    }, [page, countPerPage, startDate, endDate,colorFilter]);
 
-    const getAllCompanyData = async () => {
+    const getAllCompanyData = async (colorFilterData: any) => {
+        setColorFilter(colorFilterData)
+
+        const payload = {
+            page: page,
+            limit: countPerPage,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+            color: colorFilterData
+
+        }
+        const payloadAll = {
+            page: page,
+            limit: countPerPage,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+        }
         setLoaderForGetAll(true)
+
         if (!search) {
-            await ApiGet(`qualify/find?page=${page}&limit=${countPerPage}&startDate=${(moment(startDate).format("YYYY-MM-DD"))}&endDate=${(moment(endDate).format("YYYY-MM-DD"))}`)
+            await ApiPost(`qualify/find`,colorFilterData === "all" ? payloadAll : payload)
                 .then((res: any) => {
                     console.log("resresres", res);
 
@@ -85,7 +103,23 @@ export default function Qualifiziert() {
                 })
         }
         else {
-            await ApiGet(`qualify/find?search=${search}&page=${page}&limit=${countPerPage}`)
+            const payload = {
+                page: page,
+                limit: countPerPage,
+                startDate: moment(startDate).format("YYYY-MM-DD"),
+                endDate: moment(endDate).format("YYYY-MM-DD"),
+                color: colorFilterData,
+                search: search
+            }
+            const payloadAll = {
+                page: page,
+                limit: countPerPage,
+                startDate: moment(startDate).format("YYYY-MM-DD"),
+                endDate: moment(endDate).format("YYYY-MM-DD"),
+                search: search
+            }
+
+            await ApiPost(`qualify/find`,colorFilterData === "all" ? payloadAll : payload)
                 .then((res: any) => {
                     setGetAllCompany(res?.data?.data);
                     setCount(res?.data?.total);
@@ -103,7 +137,7 @@ export default function Qualifiziert() {
                 if (res?.status === 200) {
                     toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.");
                     setShow(false);
-                    getAllCompanyData();
+                    getAllCompanyData(colorFilter);
 
                 } else {
                     toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
@@ -164,12 +198,12 @@ export default function Qualifiziert() {
             setPage(1);
             setCount(0);
             setCountPerPage(countPerPage);
-            getAllCompanyData();
+            getAllCompanyData(colorFilter);
         } else {
             setPage(1);
             setCount(0);
             setCountPerPage(countPerPage);
-            getAllCompanyData();
+            getAllCompanyData(colorFilter);
         }
     }, [debouncedSearchTerm]);
     const showAdsDataClose = (e: any) => {
@@ -250,7 +284,7 @@ export default function Qualifiziert() {
                 .then((res) => {
 
                     toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
-                    getAllCompanyData();
+                    getAllCompanyData(colorFilter);
                 })
                 .catch((err) => {
                     toast.error("Etwas ist schief gelaufen.Bitte versuche es erneut");
@@ -270,16 +304,15 @@ export default function Qualifiziert() {
                             {(page - 1) * countPerPage + (index + 1)}
 
 
-                            {row?.pv === true ?
+                             {row?.pv === true ?
                                 <div className="color-pink"></div>
                                 :
                                 <>
-
-
                                     {
-                                        row?.nichtGeeignet === false && row?.emailFailed === null ?
+                                        (row?.nichtGeeignet === false || row?.nichtGeeignet === null) && row?.emailFailed === null ?
 
-                                            !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
+                                            !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment
+                                                && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
                                                 <div className="color-red"></div>
                                                 :
                                                 row?.appointmentDate || row?.appointmentTime ?
@@ -287,7 +320,6 @@ export default function Qualifiziert() {
                                                     <div className="color-orange"></div>
 
                                             :
-
 
                                             row?.nichtGeeignet === true || row?.emailFailed === true || row?.emailFailed === null ?
                                                 (<div className="color-black"></div>)
@@ -304,7 +336,6 @@ export default function Qualifiziert() {
 
                                 </>
                             }
-
 
                         </div>
                     </>
@@ -563,7 +594,24 @@ export default function Qualifiziert() {
                             }}>Download with PV</button> */}
 
                     </div>
+                    <div className="d-flex align-items-center justify-content-center gallery-grid">
+                        <button className="all_filter" onClick={() => {
+                            getAllCompanyData("all")
+                        }}>Alle</button>
+                        <button className="green_filter" onClick={() => {
+                            getAllCompanyData("green")
+                        }}>Termin</button>
+                        <button className="orange_filter" onClick={() => {
+                            getAllCompanyData("orange")
+                        }}>in Bearbeitung</button>
+                        <button className="red_filter" onClick={() => {
+                            getAllCompanyData("red")
+                        }}>neu</button>
+                        <button className="black_filter" onClick={() => {
+                            getAllCompanyData("black")
 
+                        }}>nicht geeignet</button>
+                    </div>
                 </div>
                 {loaderForGetAll ?
                     <div className="text-center">
@@ -671,7 +719,7 @@ export default function Qualifiziert() {
                     </Toolbar>
 
                     <div>
-                        <UploadQualifiziert perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} />
+                        <UploadQualifiziert perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} colorFilter={colorFilter}/>
                     </div>
                 </Dialog>
             ) : null}

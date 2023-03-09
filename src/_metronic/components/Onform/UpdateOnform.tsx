@@ -9,7 +9,7 @@ import moment from "moment";
 
 
 export default function UpdateOnform(props: any) {
-    const { idForAdsData, setAdsData, perentEditData ,getAllCompanyData,setPerentEditData} = props
+    const { idForAdsData, setAdsData, perentEditData ,getAllCompanyData,setPerentEditData,colorFilter} = props
 
 
     const [teamData, setTeamData] = useState<any>({
@@ -112,12 +112,97 @@ export default function UpdateOnform(props: any) {
 
     }
 
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@', teamData)
+  const handleStatusColor = () => {
+    let color = "red";
+    if (teamData.pv === true) {
+      return (color = "pink");
+    } else {
+      if (
+        (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
+        teamData?.emailFailed === null
+      ) {
   
+  
+        if (
+          !teamData.pv &&
+          !teamData.sms &&
+          !teamData?.contactedBy &&
+          !teamData?.contactedOn &&
+           !teamData?.contactedAgain   &&
+           !teamData?.lastContact  &&
+          !teamData?.reached &&
+          !teamData?.makeAppointment &&
+          !teamData?.usefulInformation &&
+           !teamData?.appointmentDate  &&
+          !teamData?.appointmentTime
+        ) {
+          console.log("first");
+          return (color = "red");
+        } else {
+          if (
+            teamData.appointmentDate ||
+            teamData.appointmentTime
+          ) {
+            console.log("second");
+            return (color = "green");
+          } else {
+            console.log("third");
+            return (color = "orange");
+          }
+        }
+      } else {
+        if (
+          teamData.nichtGeeignet === true ||
+          teamData.emailFailed === true ||
+          teamData.emailFailed === null
+        ) {
+          console.log("fifth");
+          return (color = "black");
+        } else {
+          if (
+            (teamData.appointmentDate !== "Invalid date" &&
+              teamData?.appointmentDate?.length !== 0 &&
+              teamData?.appointmentDate !== null) ||
+            teamData?.appointmentTime
+          ) {
+            console.log("sixth");
+            return (color = "green");
+          } else {
+            if (
+              teamData.sms ||
+              teamData.contactedBy ||
+              (teamData.contactedOn !== "Invalid date" &&
+                teamData?.contactedOn?.length !== 0 &&
+                teamData?.contactedOn !== null) ||
+              (teamData.contactedAgain !== "Invalid date" &&
+                teamData?.contactedAgain?.length !== 0 &&
+                teamData?.contactedAgain !== null) ||
+              (teamData.lastContact !== "Invalid date" &&
+                teamData.lastContact?.length !== 0 &&
+                teamData.lastContact !== null) ||
+              teamData.reached ||
+              teamData.makeAppointment ||
+              teamData.usefulInformation
+            ) {
+              console.log("seventh");
+              return (color = "orange");
+            } else {
+              console.log("eigth");
+              return (color = "red");
+            }
+          }
+        }
+      }
+    }
+  };
+
 
     //Api For add company data
     const addTeam = async (e: any) => {
         setIsEditApi(false)
         // if (formValidation()) {
+                const color = await handleStatusColor()
         setLoader(true)
         let data = {
             sms: teamData?.sms === "true" ||  teamData?.sms === true  ? true : teamData?.sms === "false" ||  teamData?.sms === false ? false : null,
@@ -133,6 +218,8 @@ export default function UpdateOnform(props: any) {
             usefulInformation: teamData?.usefulInformation,
             nichtGeeignet: teamData?.nichtGeeignet,
             pv: teamData?.pv,
+            color: color,
+
 
         }
         await ApiPut(`update?id=${idForAdsData}`, data)
@@ -141,7 +228,7 @@ export default function UpdateOnform(props: any) {
                 setAdsData(false)
                 setIsEditApi(false);
                 setTeamData({});                                                                
-                getAllCompanyData();
+                getAllCompanyData(colorFilter);
                 getAllTeamData()
                 // setTeamData({});
                 setLoader(false)

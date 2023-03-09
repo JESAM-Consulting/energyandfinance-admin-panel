@@ -439,3 +439,67 @@ img.cmsImage {
   padding: 10px;
   color: white;
 }
+.pink_filter {
+  height: 35px;
+  padding: 20px;
+  background-color: pink;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: black;
+  text-transform: capitalize;
+}
+
+.green_filter {
+  height: 35px;
+  padding: 20px;
+  background-color: green;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.orange_filter {
+  height: 35px;
+  padding: 20px;
+  background-color: orange;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.red_filter {
+  height: 35px;
+  padding: 20px;
+  background-color: red;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.black_filter {
+  height: 35px;
+  padding: 20px;
+  background-color: black;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-transform: capitalize;
+}
+.all_filter {
+  height: 35px;
+  padding: 20px;
+  background-color: lightgrey;
+  border: none;
+  display: flex;
+  align-items: center;
+  color: black;
+  text-transform: capitalize;
+}

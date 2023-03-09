@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ApiGet } from "../../../helpers/API/ApiData";
+import { ApiGet, ApiPost } from "../../../helpers/API/ApiData";
 import CountUp from 'react-countup';
 import { getUserInfo } from "../../../utils/user.util";
 import Card from 'react-bootstrap/Card';
@@ -23,7 +23,7 @@ console.log("ads4ads4",ads4);
     getQualifiziert();
   }, [])
   const getAllInterviewFour = async () => {
-     axios.get(`${BaseApi_URL}/get-energy-form`)
+     axios.post(`${BaseApi_URL}/get-energy-form`)
       .then((res: any) => {
         console.log("****",res)
         setInterview4(res?.data?.count);
@@ -32,7 +32,7 @@ console.log("ads4ads4",ads4);
 
   
   const GetOnForm = async () => {
-    await ApiGet(`find`)
+    await ApiPost(`find`)
       .then((res: any) => {
         setOnForm(res?.data?.total);
       })
@@ -40,7 +40,7 @@ console.log("ads4ads4",ads4);
   }
 
   const getQualifiziert = async () => {
-    await ApiGet(`qualify/find`)
+    await ApiPost(`qualify/find`)
       .then((res: any) => {
         setAds4(res?.data?.total);
       })
