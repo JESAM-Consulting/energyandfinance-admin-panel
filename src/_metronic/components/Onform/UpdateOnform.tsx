@@ -114,89 +114,92 @@ export default function UpdateOnform(props: any) {
 
   console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@', teamData)
   const handleStatusColor = () => {
-    let color = "red";
-    if (teamData.pv === true) {
-      return (color = "pink");
-    } else {
-      if (
-        (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
-        teamData?.emailFailed === null
-      ) {
-  
-  
-        if (
-          !teamData.pv &&
-          !teamData.sms &&
-          !teamData?.contactedBy &&
-          !teamData?.contactedOn &&
-           !teamData?.contactedAgain   &&
-           !teamData?.lastContact  &&
-          !teamData?.reached &&
-          !teamData?.makeAppointment &&
-          !teamData?.usefulInformation &&
-           !teamData?.appointmentDate  &&
-          !teamData?.appointmentTime
-        ) {
-          console.log("first");
-          return (color = "red");
-        } else {
-          if (
-            teamData.appointmentDate ||
-            teamData.appointmentTime
-          ) {
-            console.log("second");
-            return (color = "green");
-          } else {
-            console.log("third");
-            return (color = "orange");
-          }
-        }
-      } else {
-        if (
-          teamData.nichtGeeignet === true ||
-          teamData.emailFailed === true ||
-          teamData.emailFailed === null
-        ) {
-          console.log("fifth");
-          return (color = "black");
-        } else {
-          if (
-            (teamData.appointmentDate !== "Invalid date" &&
-              teamData?.appointmentDate?.length !== 0 &&
-              teamData?.appointmentDate !== null) ||
-            teamData?.appointmentTime
-          ) {
-            console.log("sixth");
-            return (color = "green");
-          } else {
-            if (
-              teamData.sms ||
-              teamData.contactedBy ||
-              (teamData.contactedOn !== "Invalid date" &&
-                teamData?.contactedOn?.length !== 0 &&
-                teamData?.contactedOn !== null) ||
-              (teamData.contactedAgain !== "Invalid date" &&
-                teamData?.contactedAgain?.length !== 0 &&
-                teamData?.contactedAgain !== null) ||
-              (teamData.lastContact !== "Invalid date" &&
-                teamData.lastContact?.length !== 0 &&
-                teamData.lastContact !== null) ||
-              teamData.reached ||
-              teamData.makeAppointment ||
-              teamData.usefulInformation
-            ) {
-              console.log("seventh");
-              return (color = "orange");
-            } else {
-              console.log("eigth");
-              return (color = "red");
-            }
-          }
-        }
-      }
-    }
-  };
 
+    console.log("****",!teamData?.reached || teamData?.reached === false);
+    
+    
+            let color = "red";
+            console.log("colorcolor",color);
+            
+            if (teamData.pv === true) {
+              return (color = "pink");
+            } else {
+              if (
+                (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
+                teamData?.emailFailed === null
+              ) {
+                if (
+                  (!teamData.pv || teamData?.pv === false) &&
+                  (!teamData.sms ||teamData.sms === false) &&
+                  !teamData?.contactedBy &&
+                  (!teamData.contactedOn || teamData.contactedOn === "Invalid date") &&
+                   ( !teamData?.contactedAgain || teamData.contactedAgain === "Invalid date" )   &&
+                   ( !teamData?.lastContact || teamData?.lastContact === "Invalid date" )   &&
+                  (!teamData?.reached || teamData?.reached === false) &&
+                  !teamData?.makeAppointment &&
+                  !teamData?.usefulInformation &&
+                  ( !teamData?.appointmentDate ||  teamData?.appointmentDate === "Invalid date" ) &&
+                  !teamData?.appointmentTime
+                ) {
+                  console.log("first");
+                  return (color = "red");
+                } else {
+                  if (
+                    (teamData.appointmentDate && teamData.appointmentDate !== "Invalid date") ||
+                    (teamData.appointmentTime && teamData.appointmentTime!==null)
+                  ) {
+                    console.log("second");
+                    return (color = "green");
+                  } else {
+                    console.log("third");
+                    return (color = "orange");
+                  }
+                }
+              } else {
+                if (
+                  teamData.nichtGeeignet === true ||
+                  teamData.emailFailed === true ||
+                  teamData.emailFailed === null
+                ) {
+                  console.log("fifth");
+                  return (color = "black");
+                } else {
+                  if (
+                    (teamData.appointmentDate !== "Invalid date" &&
+                      teamData?.appointmentDate?.length !== 0 &&
+                      teamData?.appointmentDate !== null) ||
+                    teamData?.appointmentTime
+                  ) {
+                    console.log("sixth");
+                    return (color = "green");
+                  } else {
+                    if (
+                      teamData.sms ||
+                      teamData.contactedBy ||
+                      (teamData.contactedOn !== "Invalid date" &&
+                        teamData?.contactedOn?.length !== 0 &&
+                        teamData?.contactedOn !== null) ||
+                      (teamData.contactedAgain !== "Invalid date" &&
+                        teamData?.contactedAgain?.length !== 0 &&
+                        teamData?.contactedAgain !== null) ||
+                      (teamData.lastContact !== "Invalid date" &&
+                        teamData.lastContact?.length !== 0 &&
+                        teamData.lastContact !== null) ||
+                      teamData.reached ||
+                      teamData.makeAppointment ||
+                      teamData.usefulInformation
+                    ) {
+                      console.log("seventh");
+                      return (color = "orange");
+                    } else {
+                      console.log("eigth");
+                      return (color = "red");
+                    }
+                  }
+                }
+              }
+            }
+          };
 
     //Api For add company data
     const addTeam = async (e: any) => {

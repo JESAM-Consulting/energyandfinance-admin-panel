@@ -290,89 +290,92 @@ export default function Onform() {
             toast.error("Please Select Excel File !");
         }
     };
-    const handleStatusColor = (row: any) => {
+    const handleStatusColor = (row:any) => {
+
+
+
         let color = "red";
         if (row.pv === true) {
             return <div className="color-pink"></div>;
         } else {
+          if (
+            (row?.nichtGeeignet === false || row?.nichtGeeignet === null) &&
+            row?.emailFailed === null
+          ) {
             if (
-                (row?.nichtGeeignet === false || row?.nichtGeeignet === null) &&
-                row?.emailFailed === null
+              !row.pv &&
+              !row.sms &&
+              !row?.contactedBy &&
+              (!row.contactedOn || row.contactedOn === "Invalid date") &&
+               ( !row?.contactedAgain || row.contactedAgain === "Invalid date" )   &&
+               ( !row?.lastContact || row?.lastContact === "Invalid date" )   &&
+              !row?.reached &&
+              !row?.makeAppointment &&
+              !row?.usefulInformation &&
+              ( !row?.appointmentDate ||  row?.appointmentDate === "Invalid date" ) &&
+              !row?.appointmentTime
             ) {
-
-
-                if (
-                    !row.pv &&
-                    !row.sms &&
-                    !row?.contactedBy &&
-                    !row?.contactedOn &&
-                    !row?.contactedAgain &&
-                    !row?.lastContact &&
-                    !row?.reached &&
-                    !row?.makeAppointment &&
-                    !row?.usefulInformation &&
-                    !row?.appointmentDate &&
-                    !row?.appointmentTime
-                ) {
-                    console.log("first");
-                    return <div className="color-red"></div>;
-                } else {
-                    if (
-                        row.appointmentDate ||
-                        row.appointmentTime
-                    ) {
-                        console.log("second");
-                        return <div className="color-green"></div>;
-                    } else {
-                        console.log("third");
-                        return <div className="color-orange"></div>;
-                    }
-                }
+              console.log("first");
+              return <div className="color-red"></div>;
             } else {
-                if (
-                    row.nichtGeeignet === true ||
-                    row.emailFailed === true ||
-                    row.emailFailed === null
-                ) {
-                    console.log("fifth");
-                    return <div className="color-black"></div>;
-                } else {
-                    if (
-                        (row.appointmentDate !== "Invalid date" &&
-                            row?.appointmentDate?.length !== 0 &&
-                            row?.appointmentDate !== null) ||
-                        row?.appointmentTime
-                    ) {
-                        console.log("sixth");
-                        return <div className="color-green"></div>;
-                    } else {
-                        if (
-                            row.sms ||
-                            row.contactedBy ||
-                            (row.contactedOn !== "Invalid date" &&
-                                row?.contactedOn?.length !== 0 &&
-                                row?.contactedOn !== null) ||
-                            (row.contactedAgain !== "Invalid date" &&
-                                row?.contactedAgain?.length !== 0 &&
-                                row?.contactedAgain !== null) ||
-                            (row.lastContact !== "Invalid date" &&
-                                row.lastContact?.length !== 0 &&
-                                row.lastContact !== null) ||
-                            row.reached ||
-                            row.makeAppointment ||
-                            row.usefulInformation
-                        ) {
-                            console.log("seventh");
-                            return <div className="color-orange"></div>;
-                        } else {
-                            console.log("eigth");
-                            return <div className="color-red"></div>;
-                        }
-                    }
-                }
+              if (
+                row.appointmentDate ||
+                row.appointmentTime
+              ) {
+                console.log("second");
+                return <div className="color-green"></div>;
+              } else {
+                console.log("third");
+                return <div className="color-orange"></div>;
+              }
             }
+          } else {
+            if (
+              row.nichtGeeignet === true ||
+              row.emailFailed === true ||
+              row.emailFailed === null
+            ) {
+              console.log("fifth");
+              return <div className="color-black"></div>;
+
+            } else {
+              if (
+                (row.appointmentDate !== "Invalid date" &&
+                  row?.appointmentDate?.length !== 0 &&
+                  row?.appointmentDate !== null) ||
+                row?.appointmentTime
+              ) {
+                console.log("sixth");
+                return <div className="color-green"></div>;
+
+              } else {
+                if (
+                  row.sms ||
+                  row.contactedBy ||
+                  (row.contactedOn !== "Invalid date" &&
+                    row?.contactedOn?.length !== 0 &&
+                    row?.contactedOn !== null) ||
+                  (row.contactedAgain !== "Invalid date" &&
+                    row?.contactedAgain?.length !== 0 &&
+                    row?.contactedAgain !== null) ||
+                  (row.lastContact !== "Invalid date" &&
+                    row.lastContact?.length !== 0 &&
+                    row.lastContact !== null) ||
+                  row.reached ||
+                  row.makeAppointment ||
+                  row.usefulInformation
+                ) {
+                  console.log("seventh");
+                  return <div className="color-orange"></div>;
+                } else {
+                  console.log("eigth");
+                  return <div className="color-red"></div>;
+                }
+              }
+            }
+          }
         }
-    };
+      };
 
     const columns = [
         {
