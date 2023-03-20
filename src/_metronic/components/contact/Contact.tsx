@@ -795,18 +795,23 @@ export default function Onform() {
                     <div className="d-flex align-items-center justify-content-center gallery-grid">
                         <button className="all_filter" onClick={() => {
                             getAllCompanyData("all")
+                            setPage(1)
                         }}>Alle</button>
                         <button className="green_filter" onClick={() => {
                             getAllCompanyData("green")
+                            setPage(1)
                         }}>Termin</button>
                         <button className="orange_filter" onClick={() => {
                             getAllCompanyData("orange")
+                            setPage(1)
                         }}>in Bearbeitung</button>
                         <button className="red_filter" onClick={() => {
                             getAllCompanyData("red")
+                            setPage(1)
                         }}>neu</button>
                         <button className="black_filter" onClick={() => {
                             getAllCompanyData("black")
+                            setPage(1)
 
                         }}>nicht geeignet</button>
                     </div>
