@@ -1,15 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { ApiGet, ApiPost, ApiPut, ApiDelete } from "../../../helpers/API/ApiData"
-import { toast,  } from "react-toastify";
-import  { defaultThemes } from "react-data-table-component";
+import { toast, } from "react-toastify";
+import { defaultThemes } from "react-data-table-component";
 import moment from "moment";
 
 
 
 
 export default function LandingPage(props: any) {
-    const { idForAdsData, setAdsData, perentEditData ,getAllCompanyData,setPerentEditData,colorFilter} = props
+    const { idForAdsData, setAdsData, perentEditData, getAllCompanyData, setPerentEditData, colorFilter } = props
 
 
     const [teamData, setTeamData] = useState<any>({
@@ -20,12 +20,14 @@ export default function LandingPage(props: any) {
         lastContact: (moment(perentEditData?.lastContact).format("YYYY-MM-DD")),
         emailFailed: perentEditData?.emailFailed,
         reached: perentEditData?.reached,
-        appointmentDate:(moment(perentEditData?.appointmentDate).format("YYYY-MM-DD")),
+        appointmentDate: (moment(perentEditData?.appointmentDate).format("YYYY-MM-DD")),
         appointmentTime: perentEditData?.appointmentTime,
         makeAppointment: perentEditData?.makeAppointment,
         usefulInformation: perentEditData?.usefulInformation,
         nichtGeeignet: perentEditData?.nichtGeeignet,
         pv: perentEditData?.pv,
+        onBoarding: perentEditData?.onBoarding,
+        wahl: perentEditData?.wahl,
 
     });
 
@@ -38,12 +40,10 @@ export default function LandingPage(props: any) {
     const [search, setSearch] = useState<any>();
     const [page, setPage] = useState<any>(1);
     const [count, setCount] = useState<any>(0);
-    const [teamId, setTeamId] = useState<any>();
     const [countPerPage, setCountPerPage] = useState<any>(10);
     const [loader, setLoader] = useState<any>(false);
     const [loaderForGetAll, setLoaderForGetAll] = useState<any>(false);
-    const [errorsForPhoto, setErrorsForPhoto] = useState<any>({});
-    const [show, setShow] = useState<any>(false);
+
 
     const paginationComponentOptions = {
         rowsPerPageText: 'Zeilen pro Seite',
@@ -57,29 +57,19 @@ export default function LandingPage(props: any) {
         // eslint-disable-line react-hooks/exhaustive-deps
     }, [page, countPerPage]);
     //For close company model
-    const addCompanyModelClose = (e: any) => {
-        setAddTeamData(false)
-        setIsEditApi(false)
-        setErrors(false)
-        setTeamData({})
-    }
+
     const onhandleChange = (e: any) => {
 
         // e.target.value.replace(/[^a-zA-Z]/g, "");
         const { name, value } = e.target;
-        if (name === "emailFailed" || name === "nichtGeeignet" || name === "pv") {
+        if (name === "emailFailed" || name === "nichtGeeignet" || name === "pv" || name === "onBoarding" || name === "wahl") {
             setTeamData({ ...teamData, [name]: e.target.checked })
         }
         else {
             setTeamData({ ...teamData, [name]: value })
         }
         setErrors({ ...errors, [name]: "" })
-
     }
-
-    console.log("teamDat34a",teamData);
-    
-   
     // Form validation
 
     //Api for get all companydata
@@ -116,114 +106,116 @@ export default function LandingPage(props: any) {
 
     const handleStatusColor = () => {
 
-        console.log("****",!teamData?.reached || teamData?.reached === false);
-        
-        
-                let color = "red";
-                console.log("colorcolor",color);
-                
-                if (teamData.pv === true) {
-                  return (color = "pink");
+        console.log("****", !teamData?.reached || teamData?.reached === false);
+
+
+        let color = "red";
+        console.log("colorcolor", color);
+
+        if (teamData.pv === true || teamData.wahl === true) {
+            return (color = "pink");
+        } else {
+            if (
+                (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
+                teamData?.emailFailed === null
+            ) {
+                if (
+                    (!teamData.pv || teamData?.pv === false) &&
+                    (!teamData.sms || teamData.sms === false) &&
+                    !teamData?.contactedBy &&
+                    (!teamData.contactedOn || teamData.contactedOn === "Invalid date") &&
+                    (!teamData?.contactedAgain || teamData.contactedAgain === "Invalid date") &&
+                    (!teamData?.lastContact || teamData?.lastContact === "Invalid date") &&
+                    (!teamData?.reached || teamData?.reached === false) &&
+                    !teamData?.makeAppointment &&
+                    !teamData?.usefulInformation &&
+                    (!teamData?.appointmentDate || teamData?.appointmentDate === "Invalid date") &&
+                    !teamData?.appointmentTime
+                ) {
+                    console.log("first");
+                    return (color = "red");
                 } else {
-                  if (
-                    (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
-                    teamData?.emailFailed === null
-                  ) {
                     if (
-                      (!teamData.pv || teamData?.pv === false) &&
-                      (!teamData.sms ||teamData.sms === false) &&
-                      !teamData?.contactedBy &&
-                      (!teamData.contactedOn || teamData.contactedOn === "Invalid date") &&
-                       ( !teamData?.contactedAgain || teamData.contactedAgain === "Invalid date" )   &&
-                       ( !teamData?.lastContact || teamData?.lastContact === "Invalid date" )   &&
-                      (!teamData?.reached || teamData?.reached === false) &&
-                      !teamData?.makeAppointment &&
-                      !teamData?.usefulInformation &&
-                      ( !teamData?.appointmentDate ||  teamData?.appointmentDate === "Invalid date" ) &&
-                      !teamData?.appointmentTime
-                    ) {
-                      console.log("first");
-                      return (color = "red");
-                    } else {
-                      if (
                         (teamData.appointmentDate && teamData.appointmentDate !== "Invalid date") ||
-                        (teamData.appointmentTime && teamData.appointmentTime!==null)
-                      ) {
+                        (teamData.appointmentTime && teamData.appointmentTime !== null)
+                    ) {
                         console.log("second");
                         return (color = "green");
-                      } else {
+                    } else {
                         console.log("third");
                         return (color = "orange");
-                      }
                     }
-                  } else {
+                }
+            } else {
+                if (
+                    teamData.nichtGeeignet === true ||
+                    teamData.emailFailed === true ||
+                    teamData.emailFailed === null
+                ) {
+                    console.log("fifth");
+                    return (color = "black");
+                } else {
                     if (
-                      teamData.nichtGeeignet === true ||
-                      teamData.emailFailed === true ||
-                      teamData.emailFailed === null
-                    ) {
-                      console.log("fifth");
-                      return (color = "black");
-                    } else {
-                      if (
                         (teamData.appointmentDate !== "Invalid date" &&
-                          teamData?.appointmentDate?.length !== 0 &&
-                          teamData?.appointmentDate !== null) ||
+                            teamData?.appointmentDate?.length !== 0 &&
+                            teamData?.appointmentDate !== null) ||
                         teamData?.appointmentTime
-                      ) {
+                    ) {
                         console.log("sixth");
                         return (color = "green");
-                      } else {
+                    } else {
                         if (
-                          teamData.sms ||
-                          teamData.contactedBy ||
-                          (teamData.contactedOn !== "Invalid date" &&
-                            teamData?.contactedOn?.length !== 0 &&
-                            teamData?.contactedOn !== null) ||
-                          (teamData.contactedAgain !== "Invalid date" &&
-                            teamData?.contactedAgain?.length !== 0 &&
-                            teamData?.contactedAgain !== null) ||
-                          (teamData.lastContact !== "Invalid date" &&
-                            teamData.lastContact?.length !== 0 &&
-                            teamData.lastContact !== null) ||
-                          teamData.reached ||
-                          teamData.makeAppointment ||
-                          teamData.usefulInformation
+                            teamData.sms ||
+                            teamData.contactedBy ||
+                            (teamData.contactedOn !== "Invalid date" &&
+                                teamData?.contactedOn?.length !== 0 &&
+                                teamData?.contactedOn !== null) ||
+                            (teamData.contactedAgain !== "Invalid date" &&
+                                teamData?.contactedAgain?.length !== 0 &&
+                                teamData?.contactedAgain !== null) ||
+                            (teamData.lastContact !== "Invalid date" &&
+                                teamData.lastContact?.length !== 0 &&
+                                teamData.lastContact !== null) ||
+                            teamData.reached ||
+                            teamData.makeAppointment ||
+                            teamData.usefulInformation
                         ) {
-                          console.log("seventh");
-                          return (color = "orange");
+                            console.log("seventh");
+                            return (color = "orange");
                         } else {
-                          console.log("eigth");
-                          return (color = "red");
+                            console.log("eigth");
+                            return (color = "red");
                         }
-                      }
                     }
-                  }
                 }
-              };
-    
+            }
+        }
+    };
+
 
 
     //Api For add company data
     const addTeam = async (e: any) => {
         setIsEditApi(false)
         // if (formValidation()) {
-            const color = await handleStatusColor()
+        const color = await handleStatusColor()
         setLoader(true)
         let data = {
-            sms: teamData?.sms === "true" ||  teamData?.sms === true  ? true : teamData?.sms === "false" ||  teamData?.sms === false ? false : null,
+            sms: teamData?.sms === "true" || teamData?.sms === true ? true : teamData?.sms === "false" || teamData?.sms === false ? false : null,
             contactedBy: teamData?.contactedBy,
             contactedOn: teamData?.contactedOn === "Invalid date" ? null : teamData?.contactedOn,
             contactedAgain: teamData?.contactedAgain === "Invalid date" ? null : teamData?.contactedAgain,
             lastContact: teamData?.lastContact === "Invalid date" ? null : teamData?.lastContact,
             emailFailed: teamData?.emailFailed,
             reached: teamData?.reached === "true" || teamData?.reached === true ? true : teamData?.reached === "false" || teamData?.reached === false ? false : null,
-            appointmentDate: teamData?.appointmentDate === "Invalid date" ? null : teamData?.appointmentDate ,
+            appointmentDate: teamData?.appointmentDate === "Invalid date" ? null : teamData?.appointmentDate,
             appointmentTime: teamData?.appointmentTime,
             makeAppointment: teamData?.makeAppointment,
             usefulInformation: teamData?.usefulInformation,
             nichtGeeignet: teamData?.nichtGeeignet,
             pv: teamData?.pv,
+            onBoarding: teamData?.onBoarding,
+            wahl: teamData?.wahl,
             color: color,
 
 
@@ -233,7 +225,7 @@ export default function LandingPage(props: any) {
                 toast.success("Vielen Dank, Ihre Daten wurden erfolgreich eingereicht.")
                 setAdsData(false)
                 setIsEditApi(false);
-                setTeamData({});                                                                
+                setTeamData({});
                 getAllCompanyData(colorFilter);
                 getAllTeamData()
                 // setTeamData({});
@@ -285,13 +277,13 @@ export default function LandingPage(props: any) {
     }, [debouncedSearchTerm]);
 
     // -------------------------DATA TABLE--------------------
-   
+
     return (
         <>
 
             <div className="ml-40 margin-left-remove">
-                        {console.log("teamDarrrta",teamData)
-                        }
+                {console.log("teamDarrrta", teamData)
+                }
 
                 <div className="form-group row">
                     <label className="col-xl-3 col-lg-3 col-form-label">
@@ -309,7 +301,7 @@ export default function LandingPage(props: any) {
                                     onhandleChange(e);
                                 }}
                             >
-                                <option value=""  selected disabled>Auswahl</option>
+                                <option value="" selected disabled>Auswahl</option>
                                 <option value="true">Ja</option>
                                 <option value="false">Nein</option>
                             </select>
@@ -438,7 +430,7 @@ export default function LandingPage(props: any) {
                     </div>
                 </div>
 
-                {console.log("teamData?.reached",teamData?.emailFailed)}
+                {console.log("teamData?.reached", teamData?.emailFailed)}
 
 
                 <div className="form-group row">
@@ -454,7 +446,7 @@ export default function LandingPage(props: any) {
                                 id="emailFailed"
                                 name="emailFailed"
                                 value={teamData?.emailFailed}
-                                checked= {teamData?.emailFailed}
+                                checked={teamData?.emailFailed}
                                 onChange={(e) => { onhandleChange(e) }}
                             />
                         </div>
@@ -472,7 +464,7 @@ export default function LandingPage(props: any) {
                 <div className="form-group row">
                     <label className="col-xl-3 col-lg-3 col-form-label">
 
-                    pv
+                        pv
                     </label>
                     <div className="col-lg-9 col-xl-6">
                         <div>
@@ -482,7 +474,7 @@ export default function LandingPage(props: any) {
                                 id="pv"
                                 name="pv"
                                 value={teamData?.pv}
-                                checked= {teamData?.pv}
+                                checked={teamData?.pv}
                                 onChange={(e) => { onhandleChange(e) }}
                             />
                         </div>
@@ -512,10 +504,10 @@ export default function LandingPage(props: any) {
                                 }}
                                 name="reached"
                                 defaultValue={teamData?.reached === true ? "true" : teamData?.reached === false ? "false" : ""}
-                                // defaultValue="true"
+                            // defaultValue="true"
                             >
                                 <option value="null" selected disabled>
-                                Auswahl
+                                    Auswahl
                                 </option>
                                 <option value="true">Ja</option>
                                 <option value="false">Nein</option>
@@ -647,7 +639,7 @@ export default function LandingPage(props: any) {
                 <div className="form-group row">
                     <label className="col-xl-3 col-lg-3 col-form-label">
 
-                    nicht geeignet
+                        nicht geeignet
                     </label>
                     <div className="col-lg-9 col-xl-6">
                         <div>
@@ -657,11 +649,49 @@ export default function LandingPage(props: any) {
                                 id="nichtGeeignet"
                                 name="nichtGeeignet"
                                 value={teamData?.nichtGeeignet}
-                                checked= {teamData?.nichtGeeignet}
+                                checked={teamData?.nichtGeeignet}
                                 onChange={(e) => { onhandleChange(e) }}
                             />
                         </div>
-                       
+
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-xl-3 col-lg-3 col-form-label">
+
+                        onBoarding
+                    </label>
+                    <div className="col-lg-9 col-xl-6">
+                        <div>
+                            <input
+                                type="checkbox"
+                                className={`form-control form-control-lg form-control-solid `}
+                                id="onBoarding"
+                                name="onBoarding"
+                                value={teamData?.onBoarding}
+                                checked={teamData?.onBoarding}
+                                onChange={(e) => { onhandleChange(e) }}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-xl-3 col-lg-3 col-form-label">
+
+                        wahl
+                    </label>
+                    <div className="col-lg-9 col-xl-6">
+                        <div>
+                            <input
+                                type="checkbox"
+                                className={`form-control form-control-lg form-control-solid `}
+                                id="wahl"
+                                name="wahl"
+                                value={teamData?.wahl}
+                                checked={teamData?.wahl}
+                                onChange={(e) => { onhandleChange(e) }}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -674,7 +704,7 @@ export default function LandingPage(props: any) {
                                 <span className="mx-3 spinner spinner-white" role="status"></span>
                             </button>
                         </div></> :
-                        <button className="btn btncolor center" onClick={(e) => {addTeam(e)}}>Speichern</button>
+                        <button className="btn btncolor center" onClick={(e) => { addTeam(e) }}>Speichern</button>
                     }</div>
 
             </div>

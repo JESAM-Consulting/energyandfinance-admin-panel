@@ -27,6 +27,8 @@ export default function UploadQualifiziert(props: any) {
         usefulInformation: perentEditData?.usefulInformation,
         nichtGeeignet: perentEditData?.nichtGeeignet,
         pv: perentEditData?.pv,
+        onBoarding: perentEditData?.onBoarding,
+        wahl: perentEditData?.wahl,
 
     });
 
@@ -70,7 +72,7 @@ export default function UploadQualifiziert(props: any) {
 
         // e.target.value.replace(/[^a-zA-Z]/g, "");
         const { name, value } = e.target;
-        if (name === "emailFailed" || name === "nichtGeeignet" || name === "pv") {
+        if (name === "emailFailed" || name === "nichtGeeignet" || name === "pv" || name === "onBoarding" || name === "wahl") {
             setTeamData({ ...teamData, [name]: e.target.checked })
         }
         else {
@@ -123,100 +125,100 @@ export default function UploadQualifiziert(props: any) {
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@', teamData)
     const handleStatusColor = () => {
 
-        console.log("****",!teamData?.reached || teamData?.reached === false);
-        
-        
-                let color = "red";
-                console.log("colorcolor",color);
-                
-                if (teamData.pv === true) {
-                  return (color = "pink");
+        console.log("****", !teamData?.reached || teamData?.reached === false);
+
+
+        let color = "red";
+        console.log("colorcolor", color);
+
+        if (teamData.pv === true || teamData.wahl === true) {
+            return (color = "pink");
+        } else {
+            if (
+                (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
+                teamData?.emailFailed === null
+            ) {
+                if (
+                    (!teamData.pv || teamData?.pv === false) &&
+                    (!teamData.sms || teamData.sms === false) &&
+                    !teamData?.contactedBy &&
+                    (!teamData.contactedOn || teamData.contactedOn === "Invalid date") &&
+                    (!teamData?.contactedAgain || teamData.contactedAgain === "Invalid date") &&
+                    (!teamData?.lastContact || teamData?.lastContact === "Invalid date") &&
+                    (!teamData?.reached || teamData?.reached === false) &&
+                    !teamData?.makeAppointment &&
+                    !teamData?.usefulInformation &&
+                    (!teamData?.appointmentDate || teamData?.appointmentDate === "Invalid date") &&
+                    !teamData?.appointmentTime
+                ) {
+                    console.log("first");
+                    return (color = "red");
                 } else {
-                  if (
-                    (teamData?.nichtGeeignet === false || teamData?.nichtGeeignet === null) &&
-                    teamData?.emailFailed === null
-                  ) {
                     if (
-                      (!teamData.pv || teamData?.pv === false) &&
-                      (!teamData.sms ||teamData.sms === false) &&
-                      !teamData?.contactedBy &&
-                      (!teamData.contactedOn || teamData.contactedOn === "Invalid date") &&
-                       ( !teamData?.contactedAgain || teamData.contactedAgain === "Invalid date" )   &&
-                       ( !teamData?.lastContact || teamData?.lastContact === "Invalid date" )   &&
-                      (!teamData?.reached || teamData?.reached === false) &&
-                      !teamData?.makeAppointment &&
-                      !teamData?.usefulInformation &&
-                      ( !teamData?.appointmentDate ||  teamData?.appointmentDate === "Invalid date" ) &&
-                      !teamData?.appointmentTime
-                    ) {
-                      console.log("first");
-                      return (color = "red");
-                    } else {
-                      if (
                         (teamData.appointmentDate && teamData.appointmentDate !== "Invalid date") ||
-                        (teamData.appointmentTime && teamData.appointmentTime!==null)
-                      ) {
+                        (teamData.appointmentTime && teamData.appointmentTime !== null)
+                    ) {
                         console.log("second");
                         return (color = "green");
-                      } else {
+                    } else {
                         console.log("third");
                         return (color = "orange");
-                      }
                     }
-                  } else {
+                }
+            } else {
+                if (
+                    teamData.nichtGeeignet === true ||
+                    teamData.emailFailed === true ||
+                    teamData.emailFailed === null
+                ) {
+                    console.log("fifth");
+                    return (color = "black");
+                } else {
                     if (
-                      teamData.nichtGeeignet === true ||
-                      teamData.emailFailed === true ||
-                      teamData.emailFailed === null
-                    ) {
-                      console.log("fifth");
-                      return (color = "black");
-                    } else {
-                      if (
                         (teamData.appointmentDate !== "Invalid date" &&
-                          teamData?.appointmentDate?.length !== 0 &&
-                          teamData?.appointmentDate !== null) ||
+                            teamData?.appointmentDate?.length !== 0 &&
+                            teamData?.appointmentDate !== null) ||
                         teamData?.appointmentTime
-                      ) {
+                    ) {
                         console.log("sixth");
                         return (color = "green");
-                      } else {
+                    } else {
                         if (
-                          teamData.sms ||
-                          teamData.contactedBy ||
-                          (teamData.contactedOn !== "Invalid date" &&
-                            teamData?.contactedOn?.length !== 0 &&
-                            teamData?.contactedOn !== null) ||
-                          (teamData.contactedAgain !== "Invalid date" &&
-                            teamData?.contactedAgain?.length !== 0 &&
-                            teamData?.contactedAgain !== null) ||
-                          (teamData.lastContact !== "Invalid date" &&
-                            teamData.lastContact?.length !== 0 &&
-                            teamData.lastContact !== null) ||
-                          teamData.reached ||
-                          teamData.makeAppointment ||
-                          teamData.usefulInformation
+                            teamData.sms ||
+                            teamData.contactedBy ||
+                            (teamData.contactedOn !== "Invalid date" &&
+                                teamData?.contactedOn?.length !== 0 &&
+                                teamData?.contactedOn !== null) ||
+                            (teamData.contactedAgain !== "Invalid date" &&
+                                teamData?.contactedAgain?.length !== 0 &&
+                                teamData?.contactedAgain !== null) ||
+                            (teamData.lastContact !== "Invalid date" &&
+                                teamData.lastContact?.length !== 0 &&
+                                teamData.lastContact !== null) ||
+                            teamData.reached ||
+                            teamData.makeAppointment ||
+                            teamData.usefulInformation
                         ) {
-                          console.log("seventh");
-                          return (color = "orange");
+                            console.log("seventh");
+                            return (color = "orange");
                         } else {
-                          console.log("eigth");
-                          return (color = "red");
+                            console.log("eigth");
+                            return (color = "red");
                         }
-                      }
                     }
-                  }
                 }
-              };
-    
+            }
+        }
+    };
+
 
     //Api For add company data
     const addTeam = async (e: any) => {
         setIsEditApi(false)
         // if (formValidation()) {
         const color = await handleStatusColor()
-        console.log("FinalColor",color);
-        
+        console.log("FinalColor", color);
+
         setLoader(true)
         let data = {
             sms: teamData?.sms === "true" || teamData?.sms === true ? true : teamData?.sms === "false" || teamData?.sms === false ? false : null,
@@ -232,6 +234,8 @@ export default function UploadQualifiziert(props: any) {
             usefulInformation: teamData?.usefulInformation,
             nichtGeeignet: teamData?.nichtGeeignet,
             pv: teamData?.pv,
+            onBoarding: teamData?.onBoarding,
+            wahl: teamData?.wahl,
             color: color,
 
         }
@@ -667,6 +671,44 @@ export default function UploadQualifiziert(props: any) {
                             />
                         </div>
 
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-xl-3 col-lg-3 col-form-label">
+
+                        onBoarding
+                    </label>
+                    <div className="col-lg-9 col-xl-6">
+                        <div>
+                            <input
+                                type="checkbox"
+                                className={`form-control form-control-lg form-control-solid `}
+                                id="onBoarding"
+                                name="onBoarding"
+                                value={teamData?.onBoarding}
+                                checked={teamData?.onBoarding}
+                                onChange={(e) => { onhandleChange(e) }}
+                            />
+                        </div>
+                    </div>
+                </div>
+                  <div className="form-group row">
+                    <label className="col-xl-3 col-lg-3 col-form-label">
+
+                    wahl
+                    </label>
+                    <div className="col-lg-9 col-xl-6">
+                        <div>
+                            <input
+                                type="checkbox"
+                                className={`form-control form-control-lg form-control-solid `}
+                                id="wahl"
+                                name="wahl"
+                                value={teamData?.wahl}
+                                checked={teamData?.wahl}
+                                onChange={(e) => { onhandleChange(e) }}
+                            />
+                        </div>
                     </div>
                 </div>
 

@@ -1,10 +1,9 @@
-// const protocol = "https";
-// const host = "abe7-2405-201-200d-1c68-e20d-9416-8bde-8139.ngrok.io/fecommen/FE_API/lead_api/v1";
-
-
-
 const protocol = "https";
-const host = "fe-lead-commen-api.rejoicehub.com/FE_API/lead_api/v1/";
+const host = "690e-2405-201-200d-1c68-b00f-fcd9-85b0-d58.ngrok.io/fecommen/FE_API/lead_api/v1/";
+
+
+// const protocol = "https";
+// const host = "fe-lead-commen-api.rejoicehub.com/FE_API/lead_api/v1/";
 
 
 const port = "";

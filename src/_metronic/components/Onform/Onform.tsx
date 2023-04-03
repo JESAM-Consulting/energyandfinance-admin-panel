@@ -295,7 +295,7 @@ export default function Onform() {
 
 
         let color = "red";
-        if (row.pv === true) {
+        if (row.pv === true || row.wahl === true) {
             return <div className="color-pink"></div>;
         } else {
           if (
@@ -387,47 +387,6 @@ export default function Onform() {
                             {(page - 1) * countPerPage + (index + 1)}
                         {handleStatusColor(row)}
                         </div>
-                        {/* 
-                        <div style={{ whiteSpace: "nowrap", display: "flex", width: "100%", justifyContent: "space-between" }}>
-                            {(page - 1) * countPerPage + (index + 1)}
-
-
-                            {row?.pv === true ?
-                                <div className="color-pink"></div>
-                                :
-                                <>
-                                    {
-                                        row?.nichtGeeignet === null && row?.emailFailed === null ?
-
-                                            !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment
-                                                && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
-                                                <div className="color-red"></div>
-                                                :
-                                                row?.appointmentDate || row?.appointmentTime ?
-                                                    <div className="color-green"></div> :
-                                                    <div className="color-orange"></div>
-
-                                            :
-
-                                            row?.nichtGeeignet === true || row?.emailFailed === true || row?.emailFailed === null ?
-                                                (<div className="color-black"></div>)
-                                                :
-                                                row?.appointmentDate || row?.appointmentTime ?
-                                                    <div className="color-green"></div> :
-
-                                                    row?.sms || row?.contactedBy || row?.contactedOn || row?.contactedAgain || row?.lastContact || row?.reached || row?.makeAppointment || row?.usefulInformation ?
-                                                        <div className="color-orange"></div>
-                                                        :
-                                                        <div className="color-red"></div>
-
-                                    }
-
-                                </>
-                            }
-
-
-                        </div> */}
-
                     </>
 
 
@@ -460,6 +419,8 @@ export default function Onform() {
                                     usefulInformation: row?.usefulInformation,
                                     nichtGeeignet: row?.nichtGeeignet,
                                     pv: row?.pv,
+                                    onBoarding: row?.onBoarding,
+                                    wahl: row?.wahl,
 
                                 })
 
@@ -810,6 +771,11 @@ export default function Onform() {
                             setPage(1)
 
                         }}>nicht geeignet</button>
+                        <button className="pink_filter" onClick={() => {
+                            getAllCompanyData("pink")
+                            setPage(1)
+
+                        }}>Rosa</button>
                     </div>
                 </div>
                 {loaderForGetAll ?

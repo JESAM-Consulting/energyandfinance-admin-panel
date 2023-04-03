@@ -37,8 +37,8 @@ export function AsideMenuList({ layoutProps }: any) {
             <span className="menu-text">Dashboard</span>
           </NavLink>
         </li>
-          <>   
-            <li
+          
+        <li
               className={`menu-item ${getMenuItemActive("/contact", false)}`}
               aria-haspopup="true"
             >
@@ -50,22 +50,6 @@ export function AsideMenuList({ layoutProps }: any) {
                   ></i>
                 </span>
                 <span className="menu-text">Landing Page</span>
-              </NavLink>
-            </li>
-
-           
-            <li
-              className={`menu-item ${getMenuItemActive("/onform", false)}`}
-              aria-haspopup="true"
-            >
-              <NavLink className="menu-link" to="/onform">
-                <span className="svg-icon menu-icon">
-                  <i
-                    className="fa-solid fa-user"
-                    style={{ fontSize: "13px", color: "#383839" }}
-                  ></i>
-                </span>
-                <span className="menu-text">On form</span>
               </NavLink>
             </li>
             <li
@@ -83,7 +67,21 @@ export function AsideMenuList({ layoutProps }: any) {
               </NavLink>
             </li>
            
-          </>
+          <li
+              className={`menu-item ${getMenuItemActive("/onform", false)}`}
+              aria-haspopup="true"
+            >
+              <NavLink className="menu-link" to="/onform">
+                <span className="svg-icon menu-icon">
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ fontSize: "13px", color: "#383839" }}
+                  ></i>
+                </span>
+                <span className="menu-text">On form</span>
+              </NavLink>
+            </li>
+         
       </ul>
       </>
       

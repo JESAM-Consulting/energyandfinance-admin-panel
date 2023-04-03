@@ -66,7 +66,7 @@ export default function Qualifiziert() {
     useEffect(() => {
         getAllCompanyData(colorFilter);
 
-    }, [page, countPerPage, startDate, endDate,colorFilter]);
+    }, [page, countPerPage, startDate, endDate, colorFilter]);
 
     const getAllCompanyData = async (colorFilterData: any) => {
         setColorFilter(colorFilterData)
@@ -88,7 +88,7 @@ export default function Qualifiziert() {
         setLoaderForGetAll(true)
 
         if (!search) {
-            await ApiPost(`qualify/find`,colorFilterData === "all" ? payloadAll : payload)
+            await ApiPost(`qualify/find`, colorFilterData === "all" ? payloadAll : payload)
                 .then((res: any) => {
                     console.log("resresres", res);
 
@@ -119,7 +119,7 @@ export default function Qualifiziert() {
                 search: search
             }
 
-            await ApiPost(`qualify/find`,colorFilterData === "all" ? payloadAll : payload)
+            await ApiPost(`qualify/find`, colorFilterData === "all" ? payloadAll : payload)
                 .then((res: any) => {
                     setGetAllCompany(res?.data?.data);
                     setCount(res?.data?.total);
@@ -293,92 +293,89 @@ export default function Qualifiziert() {
             toast.error("Please Select Excel File !");
         }
     };
-    const handleStatusColor = (row:any) => {
-
-
-
+    const handleStatusColor = (row: any) => {
         let color = "red";
-        if (row.pv === true) {
+        if (row.pv === true || row.wahl === true) {
             return <div className="color-pink"></div>;
         } else {
-          if (
-            (row?.nichtGeeignet === false || row?.nichtGeeignet === null) &&
-            row?.emailFailed === null
-          ) {
             if (
-              !row.pv &&
-              !row.sms &&
-              !row?.contactedBy &&
-              (!row.contactedOn || row.contactedOn === "Invalid date") &&
-               ( !row?.contactedAgain || row.contactedAgain === "Invalid date" )   &&
-               ( !row?.lastContact || row?.lastContact === "Invalid date" )   &&
-              !row?.reached &&
-              !row?.makeAppointment &&
-              !row?.usefulInformation &&
-              ( !row?.appointmentDate ||  row?.appointmentDate === "Invalid date" ) &&
-              !row?.appointmentTime
+                (row?.nichtGeeignet === false || row?.nichtGeeignet === null) &&
+                row?.emailFailed === null
             ) {
-              console.log("first");
-              return <div className="color-red"></div>;
-            } else {
-              if (
-                row.appointmentDate ||
-                row.appointmentTime
-              ) {
-                console.log("second");
-                return <div className="color-green"></div>;
-              } else {
-                console.log("third");
-                return <div className="color-orange"></div>;
-              }
-            }
-          } else {
-            if (
-              row.nichtGeeignet === true ||
-              row.emailFailed === true ||
-              row.emailFailed === null
-            ) {
-              console.log("fifth");
-              return <div className="color-black"></div>;
-
-            } else {
-              if (
-                (row.appointmentDate !== "Invalid date" &&
-                  row?.appointmentDate?.length !== 0 &&
-                  row?.appointmentDate !== null) ||
-                row?.appointmentTime
-              ) {
-                console.log("sixth");
-                return <div className="color-green"></div>;
-
-              } else {
                 if (
-                  row.sms ||
-                  row.contactedBy ||
-                  (row.contactedOn !== "Invalid date" &&
-                    row?.contactedOn?.length !== 0 &&
-                    row?.contactedOn !== null) ||
-                  (row.contactedAgain !== "Invalid date" &&
-                    row?.contactedAgain?.length !== 0 &&
-                    row?.contactedAgain !== null) ||
-                  (row.lastContact !== "Invalid date" &&
-                    row.lastContact?.length !== 0 &&
-                    row.lastContact !== null) ||
-                  row.reached ||
-                  row.makeAppointment ||
-                  row.usefulInformation
+                    !row.pv &&
+                    !row.sms &&
+                    !row?.contactedBy &&
+                    (!row.contactedOn || row.contactedOn === "Invalid date") &&
+                    (!row?.contactedAgain || row.contactedAgain === "Invalid date") &&
+                    (!row?.lastContact || row?.lastContact === "Invalid date") &&
+                    !row?.reached &&
+                    !row?.makeAppointment &&
+                    !row?.usefulInformation &&
+                    (!row?.appointmentDate || row?.appointmentDate === "Invalid date") &&
+                    !row?.appointmentTime
                 ) {
-                  console.log("seventh");
-                  return <div className="color-orange"></div>;
+                    console.log("first");
+                    return <div className="color-red"></div>;
                 } else {
-                  console.log("eigth");
-                  return <div className="color-red"></div>;
+                    if (
+                        row.appointmentDate ||
+                        row.appointmentTime
+                    ) {
+                        console.log("second");
+                        return <div className="color-green"></div>;
+                    } else {
+                        console.log("third");
+                        return <div className="color-orange"></div>;
+                    }
                 }
-              }
+            } else {
+                if (
+                    row.nichtGeeignet === true ||
+                    row.emailFailed === true ||
+                    row.emailFailed === null
+                ) {
+                    console.log("fifth");
+                    return <div className="color-black"></div>;
+
+                } else {
+                    if (
+                        (row.appointmentDate !== "Invalid date" &&
+                            row?.appointmentDate?.length !== 0 &&
+                            row?.appointmentDate !== null) ||
+                        row?.appointmentTime
+                    ) {
+                        console.log("sixth");
+                        return <div className="color-green"></div>;
+
+                    } else {
+                        if (
+                            row.sms ||
+                            row.contactedBy ||
+                            (row.contactedOn !== "Invalid date" &&
+                                row?.contactedOn?.length !== 0 &&
+                                row?.contactedOn !== null) ||
+                            (row.contactedAgain !== "Invalid date" &&
+                                row?.contactedAgain?.length !== 0 &&
+                                row?.contactedAgain !== null) ||
+                            (row.lastContact !== "Invalid date" &&
+                                row.lastContact?.length !== 0 &&
+                                row.lastContact !== null) ||
+                            row.reached ||
+                            row.makeAppointment ||
+                            row.usefulInformation
+                        ) {
+                            console.log("seventh");
+                            return <div className="color-orange"></div>;
+                        } else {
+                            console.log("eigth");
+                            return <div className="color-red"></div>;
+                        }
+                    }
+                }
             }
-          }
         }
-      };
+    };
 
     const columns = [
         {
@@ -386,57 +383,16 @@ export default function Qualifiziert() {
             cell: (row: any, index: any) => {
                 return (
                     <>
- <div style={{ whiteSpace: "nowrap", display: "flex", width: "100%", justifyContent: "space-between" }}>
-                            {(page - 1) * countPerPage + (index + 1)}
-                        {handleStatusColor(row)}
-                        </div>
-                        {/* 
                         <div style={{ whiteSpace: "nowrap", display: "flex", width: "100%", justifyContent: "space-between" }}>
                             {(page - 1) * countPerPage + (index + 1)}
-
-
-                            {row?.pv === true ?
-                                <div className="color-pink"></div>
-                                :
-                                <>
-                                    {
-                                        row?.nichtGeeignet === null && row?.emailFailed === null ?
-
-                                            !row?.pv && !row?.sms && !row?.contactedBy && !row?.contactedOn && !row?.contactedAgain && !row?.lastContact && !row?.reached && !row?.makeAppointment
-                                                && !row?.usefulInformation && !row?.appointmentDate && !row?.appointmentTime ?
-                                                <div className="color-red"></div>
-                                                :
-                                                row?.appointmentDate || row?.appointmentTime ?
-                                                    <div className="color-green"></div> :
-                                                    <div className="color-orange"></div>
-
-                                            :
-
-                                            row?.nichtGeeignet === true || row?.emailFailed === true || row?.emailFailed === null ?
-                                                (<div className="color-black"></div>)
-                                                :
-                                                row?.appointmentDate || row?.appointmentTime ?
-                                                    <div className="color-green"></div> :
-
-                                                    row?.sms || row?.contactedBy || row?.contactedOn || row?.contactedAgain || row?.lastContact || row?.reached || row?.makeAppointment || row?.usefulInformation ?
-                                                        <div className="color-orange"></div>
-                                                        :
-                                                        <div className="color-red"></div>
-
-                                    }
-
-                                </>
-                            }
-
-
-                        </div> */}
-
+                            {handleStatusColor(row)}
+                        </div>
                     </>
 
 
                 )
             },
-            width: "4%",
+            sortable: true,
         },
         {
             name: "Action",
@@ -463,6 +419,8 @@ export default function Qualifiziert() {
                                     usefulInformation: row?.usefulInformation,
                                     nichtGeeignet: row?.nichtGeeignet,
                                     pv: row?.pv,
+                                    onBoarding: row?.onBoarding,
+                                    wahl: row?.wahl,
 
                                 })
 
@@ -487,7 +445,8 @@ export default function Qualifiziert() {
                     </>
                 );
             },
-            sortable: true,
+            width: "2%",
+
 
         },
         {
@@ -513,27 +472,27 @@ export default function Qualifiziert() {
         {
             name: "berufstätig",
             selector: (row: any) => (row?.isEmployed ? row?.isEmployed : "-"),
-            sortable:true
+            sortable: true
         },
         {
             name: "Vertriebserfahrung",
             selector: (row: any) => (row?.salesExperience ? row?.salesExperience : "-"),
-            sortable:true
+            sortable: true
         },
         {
             name: "Alter",
             selector: (row: any) => (row?.answer ? row?.answer : "-"),
-            sortable:true
+            sortable: true
         },
         {
             name: "Beschreibung",
             selector: (row: any) => (row?.description ? row?.description : "-"),
-            sortable:true
+            sortable: true
         },
         {
             name: "Bundesland",
             selector: (row: any) => (row?.state ? row?.state : "-"),
-            sortable:true
+            sortable: true
         },
         {
             name: "Datum",
@@ -550,7 +509,7 @@ export default function Qualifiziert() {
         //     selector: (row: any) => (row?.hastNo ? row?.hastNo : "-"),
         //     // selector: (row: any) => row?.createdAt,
         // },
-        
+
         {
             name: "SMS vorher ",
             selector: (row: any) => (row?.sms ? (row?.sms === true ? "Ja" : "Nein") : "-"),
@@ -716,6 +675,11 @@ export default function Qualifiziert() {
                             setPage(1)
 
                         }}>nicht geeignet</button>
+                        <button className="pink_filter" onClick={() => {
+                            getAllCompanyData("pink")
+                            setPage(1)
+
+                        }}>Rosa</button>
                     </div>
                 </div>
                 {loaderForGetAll ?
@@ -824,7 +788,7 @@ export default function Qualifiziert() {
                     </Toolbar>
 
                     <div>
-                        <UploadQualifiziert perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} colorFilter={colorFilter}/>
+                        <UploadQualifiziert perentEditData={perentEditData} idForAdsData={idForAdsData} setAdsData={setAdsData} getAllCompanyData={getAllCompanyData} setPerentEditData={setPerentEditData} colorFilter={colorFilter} />
                     </div>
                 </Dialog>
             ) : null}

@@ -26,6 +26,8 @@ export default function UpdateOnform(props: any) {
         usefulInformation: perentEditData?.usefulInformation,
         nichtGeeignet: perentEditData?.nichtGeeignet,
         pv: perentEditData?.pv,
+        onBoarding:perentEditData?.onBoarding,
+        wahl:perentEditData?.wahl,
 
     });
 
@@ -67,7 +69,7 @@ export default function UpdateOnform(props: any) {
 
         // e.target.value.replace(/[^a-zA-Z]/g, "");
         const { name, value } = e.target;
-        if (name === "emailFailed" || name === "nichtGeeignet" || name === "pv") {
+        if (name === "emailFailed" || name === "nichtGeeignet" || name === "pv" || name === "onBoarding" || name === "wahl") {
             setTeamData({ ...teamData, [name]: e.target.checked })
         }
         else {
@@ -121,7 +123,7 @@ export default function UpdateOnform(props: any) {
             let color = "red";
             console.log("colorcolor",color);
             
-            if (teamData.pv === true) {
+            if (teamData.pv === true || teamData.wahl === true) {
               return (color = "pink");
             } else {
               if (
@@ -221,9 +223,9 @@ export default function UpdateOnform(props: any) {
             usefulInformation: teamData?.usefulInformation,
             nichtGeeignet: teamData?.nichtGeeignet,
             pv: teamData?.pv,
+            onBoarding:teamData?.onBoarding,
+            wahl:teamData?.wahl,
             color: color,
-
-
         }
         await ApiPut(`update?id=${idForAdsData}`, data)
             .then((res: any) => {
@@ -657,6 +659,44 @@ export default function UpdateOnform(props: any) {
                             />
                         </div>
                        
+                    </div>
+                </div>
+                  <div className="form-group row">
+                    <label className="col-xl-3 col-lg-3 col-form-label">
+
+                        onBoarding
+                    </label>
+                    <div className="col-lg-9 col-xl-6">
+                        <div>
+                            <input
+                                type="checkbox"
+                                className={`form-control form-control-lg form-control-solid `}
+                                id="onBoarding"
+                                name="onBoarding"
+                                value={teamData?.onBoarding}
+                                checked={teamData?.onBoarding}
+                                onChange={(e) => { onhandleChange(e) }}
+                            />
+                        </div>
+                    </div>
+                </div>
+                  <div className="form-group row">
+                    <label className="col-xl-3 col-lg-3 col-form-label">
+
+                    wahl
+                    </label>
+                    <div className="col-lg-9 col-xl-6">
+                        <div>
+                            <input
+                                type="checkbox"
+                                className={`form-control form-control-lg form-control-solid `}
+                                id="wahl"
+                                name="wahl"
+                                value={teamData?.wahl}
+                                checked={teamData?.wahl}
+                                onChange={(e) => { onhandleChange(e) }}
+                            />
+                        </div>
                     </div>
                 </div>
 
