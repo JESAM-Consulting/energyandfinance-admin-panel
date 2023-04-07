@@ -35,7 +35,9 @@ export default function Qualifiziert() {
     const [idForAdsData, setIdForAdsData] = useState<any>({});
     const [perentEditData, setPerentEditData] = useState<any>({});
     const [show, setShow] = useState<any>(false);
-    const [storeData, setStoreData] = useState({});
+    const [descriptionModel, setDescriptionModel] = useState<any>(false);
+    const [storeDescription, setStoreDescription] = useState<any>(false);
+
 
     let userInfo = getUserInfo();
     var date = new Date();
@@ -60,9 +62,6 @@ export default function Qualifiziert() {
         rangeSeparatorText: 'von',
 
     }
-
-
-
     useEffect(() => {
         getAllCompanyData(colorFilter);
 
@@ -212,6 +211,9 @@ export default function Qualifiziert() {
 
     const handleClose = () => {
         setShow(false);
+    };
+    const handleCloseDescription = () => {
+        setDescriptionModel(false);
     };
 
 
@@ -486,8 +488,25 @@ export default function Qualifiziert() {
         },
         {
             name: "Beschreibung",
-            selector: (row: any) => (row?.description ? row?.description : "-"),
-            sortable: true
+            cell: (row: any) => {
+                return (
+                    <>
+                        <div onClick={() => {
+                            setDescriptionModel(true)
+                            setStoreDescription(row?.description)
+                        }}>
+                            {
+                                row?.description?.length > 100
+                                    ? row?.description?.substring(0, 100) + "..."
+                                    : row?.description
+                            }
+                        </div>
+
+
+                    </>
+                )
+            },
+            width: "7%",
         },
         {
             name: "Bundesland",
@@ -725,6 +744,24 @@ export default function Qualifiziert() {
                         >
                             Ja
                         </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={descriptionModel} onHide={handleCloseDescription}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Beschreibung
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <p>
+                            {storeDescription}
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={handleCloseDescription} style={{ backgroundColor: "#93c45e", border: "none" }}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
